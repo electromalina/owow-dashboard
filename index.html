@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Budget Snapshot Widget</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0&display=swap" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["PP Neue Montreal", "system-ui", "sans-serif"],
+            display: ["Neue Montreal", "system-ui", "sans-serif"],
+            mono: ["PP Neue Montreal Mono", "ui-monospace", "monospace"],
+          },
+          colors: {
+            surface: "var(--color-surface)",
+            border: "var(--color-border)",
+            text: {
+              primary: "var(--color-text-primary)",
+              secondary: "var(--color-text-secondary)",
+              muted: "var(--color-text-muted)",
+            },
+            accent: {
+              positive: "var(--color-accent-positive)",
+              info: "var(--color-accent-info)",
+              warning: "var(--color-accent-warning)",
+              danger: "var(--color-accent-danger)",
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* Fonts from /public/fonts on main branch */
+    @font-face {
+      font-family: "PP Neue Montreal";
+      src:
+        url("/fonts/ppneuemontreal-book.woff2") format("woff2"),
+        url("/fonts/ppneuemontreal-book.woff") format("woff");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "PP Neue Montreal";
+      src:
+        url("/fonts/ppneuemontreal-medium.woff2") format("woff2"),
+        url("/fonts/ppneuemontreal-medium.woff") format("woff");
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "PP Neue Montreal Mono";
+      src:
+        url("/fonts/pp-neue-montreal-mono.woff2") format("woff2"),
+        url("/fonts/pp-neue-montreal-mono.woff") format("woff");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Neue Montreal";
+      src:
+        url("/fonts/ppneuemontreal-book.woff2") format("woff2"),
+        url("/fonts/ppneuemontreal-book.woff") format("woff");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --color-text-primary: #ffffff;
+      --color-text-secondary: rgba(255, 255, 255, 0.7);
+      --color-text-muted: #8d8d8d;
+      --color-surface: #1b1b1b;
+      --color-border: rgba(255, 255, 255, 0.1);
+      --color-accent-positive: #018848;
+      --color-accent-info: #0988ef;
+      --color-accent-warning: #feb800;
+      --color-accent-danger: #ff573b;
+
+      /* Backward-compatible aliases */
+      --white: var(--color-text-primary);
+      --white-70: var(--color-text-secondary);
+      --gray-mid: var(--color-text-muted);
+      --green: var(--color-accent-positive);
+      --blue: var(--color-accent-info);
+      --yellow: var(--color-accent-warning);
+      --orange: var(--color-accent-danger);
+      --card-bg: var(--color-surface);
+      --BORDER: var(--color-border);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000000;
+      font-family: "PP Neue Montreal", system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      color: var(--color-text-primary);
+    }
+
+    .budget-card {
+      width: 420px;
+      background: #1B1B1B;
+      border-radius: 5px;
+      border: 1px solid var(--color-border);
+      padding: 32px 36px 36px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+      color: var(--color-text-primary);
+    }
+
+    .budget-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .budget-card__title {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .budget-card__title-main {
+      color: #FFF;
+      font-family: "Neue Montreal", system-ui, sans-serif;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+
+    .budget-card__subtitle {
+      color: var(--color-accent-positive);
+      font-size: 11px;
+    }
+
+    .budget-card__history-btn {
+      border: none;
+      background: transparent;
+      color: var(--color-accent-warning);
+      font-family: "PP Neue Montreal", system-ui, sans-serif;
+      font-size: 15px;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      display: block;
+      margin: 24px auto 0;
+    }
+
+    .budget-card__history-btn:hover {
+      color: #ffd24a;
+    }
+
+    .budget-card__header-icon {
+      font-family: "Material Symbols Outlined", sans-serif;
+      color: #FFF;
+      font-size: 22px;
+      cursor: pointer;
+      font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+    }
+
+    .budget-card__amount-block {
+      text-align: center;
+      margin-top: 24px;
+    }
+
+    .budget-card__month {
+      color: rgba(255, 255, 255, 0.5);
+      font-family: "Neue Montreal", system-ui, sans-serif;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      margin-bottom: 4px;
+    }
+
+    .budget-card__amount {
+      color: #FFF;
+      font-family: "PP Neue Montreal", system-ui, sans-serif;
+      font-size: 48px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      letter-spacing: -1.592px;
+      margin-bottom: 4px;
+    }
+
+    .budget-card__subamount {
+      font-size: 12px;
+      color: var(--color-text-muted);
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .budget-card__center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .donut-wrapper {
+      width: 140px;
+      height: 140px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 12px;
+    }
+
+    .donut-bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at center, var(--color-surface) 52%, transparent 53%),
+        #2a2a2a;
+      background-position: center;
+    }
+
+    .donut-progress {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at center, var(--color-surface) 52%, transparent 53%),
+        conic-gradient(
+          var(--color-accent-warning) 0deg,
+          var(--color-accent-warning) 162deg,
+          var(--color-accent-info) 162deg,
+          var(--color-accent-info) 252deg,
+          var(--color-accent-positive) 252deg,
+          var(--color-accent-positive) 288deg,
+          transparent 288deg,
+          transparent 360deg
+        );
+      transition: background 0.6s ease-out;
+    }
+
+    .donut-center-label {
+      position: relative;
+      text-align: center;
+      font-family: "PP Neue Montreal Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+        Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    .donut-center-label__percent {
+      font-size: 22px;
+      color: var(--color-accent-danger);
+      margin-bottom: 2px;
+    }
+
+    .donut-center-label__text {
+      font-size: 12px;
+      color: var(--color-text-muted);
+    }
+
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      font-size: 11px;
+      margin-top: 8px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--color-text-secondary);
+      font-family: "PP Neue Montreal Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+        Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .legend-dot--yellow {
+      background: var(--color-accent-warning);
+    }
+
+    .legend-dot--blue {
+      background: var(--color-accent-info);
+    }
+
+    .legend-dot--green {
+      background: var(--color-accent-positive);
+    }
+
+    .budget-card__footer {
+      margin-top: 24px;
+      font-size: 12px;
+      color: var(--white-70);
+      line-height: 1.4;
+      text-align: center;
+
+    }
+
+    .budget-card__footer strong {
+      color: var(--white-70);
+      font-weight: 500;
+    }
+
+    /* Edit modal */
+    .edit-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .edit-modal-overlay.is-open {
+      display: flex;
+    }
+
+    .edit-modal {
+      width: 90%;
+      max-width: 480px;
+      background: #1B1B1B;
+      border-radius: 5px;
+      border: 1px solid var(--BORDER, rgba(255, 255, 255, 0.10));
+      padding: 28px 32px 32px;
+      color: #FFF;
+      font-family: "Neue Montreal", "PP Neue Montreal", system-ui, sans-serif;
+    }
+
+    .edit-modal__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .edit-modal__title {
+      color: #FFF;
+      font-family: "Neue Montreal", system-ui, sans-serif;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      letter-spacing: -0.2px;
+    }
+
+    .edit-modal__close {
+      font-family: "Material Symbols Outlined", sans-serif;
+      font-size: 24px;
+      color: #FFF;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .edit-modal__remaining {
+      font-family: "PP Neue Montreal", system-ui, sans-serif;
+      font-size: 36px;
+      font-weight: 500;
+      margin-bottom: 28px;
+    }
+
+    .edit-modal__section {
+      margin-bottom: 24px;
+      margin-top: 36px;
+    }
+
+    .edit-modal__section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .edit-modal__section-title .material-symbols-outlined {
+      font-size: 18px;
+    }
+
+    .edit-modal__divider {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+      margin-bottom: 16px;
+    }
+
+    .edit-modal__row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .edit-modal__label {
+      font-size: 14px;
+      color: var(--gray-mid);
+      margin-left: 24px;
+    }
+
+    .edit-modal__input-wrap {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 4px;
+      margin-right: 24px;
+    }
+
+    .edit-modal__currency {
+      font-family: "PP Neue Montreal Mono", ui-monospace, monospace;
+      font-size: 14px;
+      color: #018848;
+    }
+
+    .edit-modal__bracket {
+      font-family: "PP Neue Montreal Mono", ui-monospace, monospace;
+      font-size: 14px;
+      color: #018848;
+    }
+
+    .edit-modal__input {
+      font-family: "PP Neue Montreal Mono", ui-monospace, monospace;
+      font-size: 14px;
+      color: #018848;
+      background: transparent;
+      border: none;
+      border-bottom: 1px dotted #018848;
+      padding: 4px 0;
+      width: 50px;
+      min-width: 50px;
+      text-align: right;
+    }
+
+    .edit-modal__input::placeholder {
+      color: rgba(1, 136, 72, 0.6);
+    }
+
+    .edit-modal__input:focus {
+      outline: none;
+    }
+
+    .edit-modal__textarea {
+      font-family: "Neue Montreal", system-ui, sans-serif;
+      font-size: 13px;
+      color: #FFF;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 5px;
+      padding: 12px 14px;
+      width: 100%;
+      min-height: 88px;
+      resize: vertical;
+    }
+
+    .edit-modal__textarea::placeholder {
+      color: var(--gray-mid);
+    }
+
+    .edit-modal__textarea:focus {
+      outline: none;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .edit-modal__actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: "PP Neue Montreal Mono", ui-monospace, monospace;
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 12px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    .button .material-symbols-outlined {
+      font-size: 18px;
+    }
+
+    .button--neutral {
+      background: transparent;
+      color: #FFF;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .button--neutral:hover {
+      background: #000;
+      color: #FFF;
+      border-color: #000;
+    }
+
+    .button--neutral:active {
+      background: #EE5D3E;
+      border-color: #EE5D3E;
+      color: #FFF;
+    }
+
+    .button--primary {
+      background: #FFF;
+      color: #000;
+    }
+
+    .button--primary:hover {
+      background: #000;
+      color: #FFF;
+    }
+
+    .button--primary:active {
+      background: #4CAF50;
+      color: #FFF;
+    }
+
+    /* History modal */
+    .history-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      align-items: center;
+      justify-content: center;
+      z-index: 1001;
+    }
+
+    .history-modal-overlay.is-open {
+      display: flex;
+    }
+
+    .history-modal {
+      width: 90%;
+      max-width: 430px;
+      height: 737px;
+      background: #000;
+      border: 1px solid var(--color-border);
+      border-radius: 5px;
+      padding: 28px 24px 20px;
+      color: #FFF;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .history-modal__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .history-modal__title {
+      margin: 0;
+      font-family: "Neue Montreal", system-ui, sans-serif;
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.1;
+    }
+
+    .history-modal__close {
+      border: none;
+      background: transparent;
+      color: #FFF;
+      font-size: 24px;
+      cursor: pointer;
+      font-family: "Material Symbols Outlined", sans-serif;
+      font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+    }
+
+    .history-modal__month {
+      color: var(--color-accent-warning);
+      font-size: 20px;
+      margin: 0 0 14px;
+      font-family: "PP Neue Montreal", system-ui, sans-serif;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .history-modal__scroll {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding-right: 8px;
+      scrollbar-width: thin;
+      scrollbar-color: #262626 rgba(255, 255, 255, 0.25);
+    }
+
+    .history-modal__scroll::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .history-modal__scroll::-webkit-scrollbar-track {
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 100px;
+    }
+
+    .history-modal__scroll::-webkit-scrollbar-thumb {
+      background: #262626;
+      border: 1px solid var(--color-border);
+      border-radius: 100px;
+    }
+
+    .history-group {
+      margin: 0 0 14px;
+    }
+
+    .history-group__meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-family: "PP Neue Montreal Mono", ui-monospace, monospace;
+      font-size: 12px;
+      color: #fff;
+      letter-spacing: 0.02em;
+      width: min(100%, 326px);
+    }
+
+    .history-group__sum {
+      color: #bbb;
+    }
+
+    .history-card {
+      background: #1b1b1b;
+      border: 1px solid var(--BORDER);
+      border-radius: 5px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      width: min(100%, 326px);
+    }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .history-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .history-item__left {
+      min-width: 0;
+    }
+
+    .history-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: "PP Neue Montreal Mono", ui-monospace, monospace;
+      color: #e2e2e2;
+      font-size: 8px;
+      margin-bottom: 4px;
+    }
+
+    .history-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .history-dot--yellow { background: var(--color-accent-warning); }
+    .history-dot--blue { background: var(--color-accent-info); }
+    .history-dot--green { background: var(--color-accent-positive); }
+
+    .history-item__desc {
+      margin: 0;
+      color: var(--color-text-secondary);
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .history-item__amount {
+      font-size: 18px;
+      line-height: 1;
+      white-space: nowrap;
+      font-family: "PP Neue Montreal", system-ui, sans-serif;
+      margin-top: 2px;
+    }
+
+    .history-item__amount--plus { color: var(--color-accent-positive); }
+    .history-item__amount--minus { color: var(--color-accent-danger); }
+  </style>
+</head>
+<body class="m-0 min-h-screen flex items-center justify-center bg-black font-sans text-text-primary">
+  <div class="budget-card w-[420px] rounded-[5px] border border-border bg-surface px-9 pt-8 pb-9 text-text-primary shadow-[0_16px_40px_rgba(0,0,0,0.5)]">
+    <div class="budget-card__header mb-5 flex items-start justify-between">
+      <div class="budget-card__title flex flex-col gap-1">
+        <span class="budget-card__title-main font-display text-base font-normal text-text-primary">Current Balance</span>
+        <span class="budget-card__subtitle text-[11px] text-accent-positive">● Updated 1 month ago</span>
+      </div>
+      <span class="material-symbols-outlined budget-card__header-icon cursor-pointer text-[22px] text-text-primary" id="editBudgetBtn" aria-hidden="true" title="Edit budget">edit</span>
+    </div>
+
+    <div class="budget-card__amount-block mt-6 text-center">
+      <div class="budget-card__month mb-1 font-display text-base font-normal text-white/50">March</div>
+      <div class="budget-card__amount mb-1 font-sans text-5xl font-medium tracking-[-1.592px]" id="mainAmount">$27,500</div>
+      <div class="budget-card__subamount mb-6 text-center text-xs text-text-muted" id="mainSubamount">[ 22,500 of 50,000 spent ]</div>
+    </div>
+
+    <div class="budget-card__center mb-5 flex flex-col items-center gap-3">
+      <div class="donut-wrapper relative mt-3 flex h-[140px] w-[140px] items-center justify-center">
+        <div class="donut-bg absolute h-full w-full rounded-full"></div>
+        <div class="donut-progress absolute h-full w-full rounded-full" id="donutProgress"></div>
+        <div class="donut-center-label relative text-center font-mono">
+          <div class="donut-center-label__percent mb-0.5 text-[22px] text-accent-danger" id="donutPercent">70%</div>
+          <div class="donut-center-label__text text-xs text-text-muted">used</div>
+        </div>
+      </div>
+
+      <div class="legend mt-2 flex justify-center gap-[18px] text-[11px]">
+        <div class="legend-item flex items-center gap-1.5 font-mono text-text-secondary">
+          <div class="legend-dot legend-dot--yellow h-2 w-2 rounded-full"></div>
+          <span>Design</span>
+        </div>
+        <div class="legend-item flex items-center gap-1.5 font-mono text-text-secondary">
+          <div class="legend-dot legend-dot--blue h-2 w-2 rounded-full"></div>
+          <span>Development</span>
+        </div>
+        <div class="legend-item flex items-center gap-1.5 font-mono text-text-secondary">
+          <div class="legend-dot legend-dot--green h-2 w-2 rounded-full"></div>
+          <span>Testing</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="budget-card__footer text-center text-[13px] leading-[1.45] text-text-secondary" id="mainExplanation">
+      Spending increased this month due to additional development hours required for feature refinement.
+    </div>
+    <button type="button" class="budget-card__history-btn mx-auto mt-6 block cursor-pointer bg-transparent p-0 text-[15px] leading-none text-accent-warning hover:text-[#ffd24a]" id="openHistoryBtn">History</button>
+  </div>
+
+  <!-- Edit budget modal -->
+  <div class="edit-modal-overlay fixed inset-0 z-[1000] hidden items-center justify-center bg-black/70 p-4 [&.is-open]:flex" id="editModalOverlay" aria-hidden="true">
+    <div class="edit-modal h-[737px] w-[90%] max-w-[430px] overflow-hidden rounded-[5px] border border-border bg-surface px-6 pt-7 pb-5 text-text-primary" role="dialog" aria-labelledby="editModalTitle">
+      <div class="edit-modal__header mb-5 flex items-center justify-between">
+        <h2 class="edit-modal__title m-0 font-display text-2xl font-normal leading-[1.1]" id="editModalTitle">Budget overview</h2>
+        <button type="button" class="edit-modal__close material-symbols-outlined cursor-pointer border-none bg-transparent text-2xl text-text-primary" id="closeModalBtn" aria-label="Close">close</button>
+      </div>
+      <div class="edit-modal__remaining mb-6 text-center font-sans text-5xl font-medium tracking-[-1.592px]" id="modalRemaining">$27,500</div>
+
+      <div class="edit-modal__section">
+        <div class="edit-modal__section-title">
+          <span class="material-symbols-outlined">sync</span>
+          Update the budget
+        </div>
+        <div class="edit-modal__divider"></div>
+        <div class="edit-modal__row">
+          <span class="edit-modal__label">Total Budget</span>
+          <span class="edit-modal__input-wrap">
+            <span class="edit-modal__bracket">[</span>
+            <span class="edit-modal__currency">$</span>
+            <input type="text" class="edit-modal__input" id="inputTotalBudget" placeholder="50,000" value="50000" inputmode="numeric" />
+            <span class="edit-modal__bracket">]</span>
+          </span>
+        </div>
+        <div class="edit-modal__row">
+          <span class="edit-modal__label">Amount Spent</span>
+          <span class="edit-modal__input-wrap">
+            <span class="edit-modal__bracket">[</span>
+            <span class="edit-modal__currency">$</span>
+            <input type="text" class="edit-modal__input" id="inputAmountSpent" placeholder="22,500" value="22500" inputmode="numeric" />
+            <span class="edit-modal__bracket">]</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="edit-modal__section">
+        <div class="edit-modal__section-title">
+          <span class="material-symbols-outlined">edit</span>
+          Edit the explanation
+        </div>
+        <div class="edit-modal__divider"></div>
+        <textarea class="edit-modal__textarea" id="inputExplanation" placeholder="Explain spending changes…">Spending increased this month due to additional development hours required for feature refinement.</textarea>
+      </div>
+
+      <div class="edit-modal__actions mt-7 flex justify-center gap-3">
+        <button type="button" class="button button--neutral inline-flex items-center gap-2 rounded-[5px] border border-white/50 px-5 py-3 font-mono text-xs font-medium uppercase tracking-[0.05em] text-white transition-colors hover:border-black hover:bg-black active:border-[#EE5D3E] active:bg-[#EE5D3E]" id="cancelBtn">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+          Cancel
+        </button>
+        <button type="button" class="button button--primary inline-flex items-center gap-2 rounded-[5px] bg-white px-5 py-3 font-mono text-xs font-medium uppercase tracking-[0.05em] text-black transition-colors hover:bg-black hover:text-white active:bg-[#4CAF50] active:text-white" id="saveBtn">
+          <span class="material-symbols-outlined text-[18px]">check</span>
+          Save changes
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- History modal -->
+  <div class="history-modal-overlay fixed inset-0 z-[1001] hidden items-center justify-center bg-black/70 [&.is-open]:flex" id="historyModalOverlay" aria-hidden="true">
+    <div class="history-modal flex h-[737px] w-[90%] max-w-[430px] flex-col overflow-hidden rounded-[5px] border border-border bg-black px-6 pt-7 pb-5 text-white" role="dialog" aria-labelledby="historyModalTitle">
+      <div class="history-modal__header mb-[22px] flex items-center justify-between">
+        <h2 class="history-modal__title m-0 font-display text-2xl font-normal leading-[1.1]" id="historyModalTitle">Budget History</h2>
+        <button type="button" class="history-modal__close material-symbols-outlined cursor-pointer border-none bg-transparent text-2xl text-white" id="closeHistoryBtn" aria-label="Close history">close</button>
+      </div>
+      <p class="history-modal__month m-0 mb-[14px] font-sans text-xl font-normal leading-none text-accent-warning" id="historyMonthLabel">March</p>
+
+      <div class="history-modal__scroll min-h-0 flex-1 overflow-y-auto pr-2">
+        <section class="history-group" data-month="March">
+          <div class="history-group__meta">
+            <span>[ TODAY ]</span>
+            <span class="history-group__sum">+ $900</span>
+          </div>
+          <div class="history-card">
+            <div class="history-item">
+              <div class="history-item__left">
+                <div class="history-tag"><span class="history-dot history-dot--blue"></span>DEVELOPMENT</div>
+                <p class="history-item__desc">Increased scope for feature refinement</p>
+              </div>
+              <span class="history-item__amount history-item__amount--plus">+ $1000</span>
+            </div>
+            <div class="history-item">
+              <div class="history-item__left">
+                <div class="history-tag"><span class="history-dot history-dot--blue"></span>DEVELOPMENT</div>
+                <p class="history-item__desc">Reduce budget due to additional development hours</p>
+              </div>
+              <span class="history-item__amount history-item__amount--minus">- $100</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="history-group" data-month="March">
+          <div class="history-group__meta">
+            <span>[ MAR 15TH ]</span>
+            <span class="history-group__sum">+ $500</span>
+          </div>
+          <div class="history-card">
+            <div class="history-item">
+              <div class="history-item__left">
+                <div class="history-tag"><span class="history-dot history-dot--yellow"></span>DESIGN</div>
+                <p class="history-item__desc">Increased scope for feature refinement.</p>
+              </div>
+              <span class="history-item__amount history-item__amount--plus">+ $500</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="history-group" data-month="March">
+          <div class="history-group__meta">
+            <span>[ MAR 10TH ]</span>
+            <span class="history-group__sum">+ $2,200</span>
+          </div>
+          <div class="history-card">
+            <div class="history-item">
+              <div class="history-item__left">
+                <div class="history-tag">
+                  <span class="history-dot history-dot--green"></span>TESTING
+                  <span class="history-dot history-dot--blue" style="margin-left: 6px;"></span>DEVELOPMENT
+                </div>
+                <p class="history-item__desc">Reallocated budget from testing to development.</p>
+              </div>
+              <span class="history-item__amount history-item__amount--plus">+ $2,500</span>
+            </div>
+            <div class="history-item">
+              <div class="history-item__left">
+                <div class="history-tag"><span class="history-dot history-dot--yellow"></span>DESIGN</div>
+                <p class="history-item__desc">Extra design iterations required</p>
+              </div>
+              <span class="history-item__amount history-item__amount--minus">- $300</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="history-group" data-month="March">
+          <div class="history-group__meta">
+            <span>[ MAR 6TH ]</span>
+            <span class="history-group__sum">+ $1,000</span>
+          </div>
+          <div class="history-card">
+            <div class="history-item">
+              <div class="history-item__left">
+                <div class="history-tag"><span class="history-dot history-dot--blue"></span>DEVELOPMENT</div>
+                <p class="history-item__desc">Added integration support for analytics and reporting API.</p>
+              </div>
+              <span class="history-item__amount history-item__amount--plus">+ $1,200</span>
+            </div>
+            <div class="history-item">
+              <div class="history-item__left">
+                <div class="history-tag"><span class="history-dot history-dot--green"></span>TESTING</div>
+                <p class="history-item__desc">Automated test coverage reduced manual QA hours.</p>
+              </div>
+              <span class="history-item__amount history-item__amount--minus">- $200</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="history-group" data-month="February">
+          <div class="history-group__meta">
+            <span>[ FEB 28TH ]</span>
+            <span class="history-group__sum">+ $400</span>
+          </div>
+          <div class="history-card">
+            <div class="history-item">
+              <div class="history-item__left">
+                <div class="history-tag"><span class="history-dot history-dot--yellow"></span>DESIGN</div>
+                <p class="history-item__desc">Expanded dashboard states for empty, loading, and error views.</p>
+              </div>
+              <span class="history-item__amount history-item__amount--plus">+ $600</span>
+            </div>
+            <div class="history-item">
+              <div class="history-item__left">
+                <div class="history-tag"><span class="history-dot history-dot--yellow"></span>DESIGN</div>
+                <p class="history-item__desc">Streamlined icon set and removed duplicate assets.</p>
+              </div>
+              <span class="history-item__amount history-item__amount--minus">- $200</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="history-group" data-month="February">
+          <div class="history-group__meta">
+            <span>[ FEB 22ND ]</span>
+            <span class="history-group__sum">+ $1,300</span>
+          </div>
+          <div class="history-card">
+            <div class="history-item">
+              <div class="history-item__left">
+                <div class="history-tag">
+                  <span class="history-dot history-dot--blue"></span>DEVELOPMENT
+                  <span class="history-dot history-dot--green" style="margin-left: 6px;"></span>TESTING
+                </div>
+                <p class="history-item__desc">Reworked build pipeline and test environments for release prep.</p>
+              </div>
+              <span class="history-item__amount history-item__amount--plus">+ $1,500</span>
+            </div>
+            <div class="history-item">
+              <div class="history-item__left">
+                <div class="history-tag"><span class="history-dot history-dot--green"></span>TESTING</div>
+                <p class="history-item__desc">Removed redundant regression test cycles.</p>
+              </div>
+              <span class="history-item__amount history-item__amount--minus">- $200</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="history-group" data-month="February">
+          <div class="history-group__meta">
+            <span>[ FEB 14TH ]</span>
+            <span class="history-group__sum">+ $700</span>
+          </div>
+          <div class="history-card">
+            <div class="history-item">
+              <div class="history-item__left">
+                <div class="history-tag"><span class="history-dot history-dot--yellow"></span>DESIGN</div>
+                <p class="history-item__desc">Created additional prototypes for stakeholder review.</p>
+              </div>
+              <span class="history-item__amount history-item__amount--plus">+ $900</span>
+            </div>
+            <div class="history-item">
+              <div class="history-item__left">
+                <div class="history-tag"><span class="history-dot history-dot--blue"></span>DEVELOPMENT</div>
+                <p class="history-item__desc">Refactored data services to simplify maintenance.</p>
+              </div>
+              <span class="history-item__amount history-item__amount--minus">- $200</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="history-group" data-month="February">
+          <div class="history-group__meta">
+            <span>[ FEB 3RD ]</span>
+            <span class="history-group__sum">+ $350</span>
+          </div>
+          <div class="history-card">
+            <div class="history-item">
+              <div class="history-item__left">
+                <div class="history-tag"><span class="history-dot history-dot--green"></span>TESTING</div>
+                <p class="history-item__desc">Added accessibility checks to the pre-release checklist.</p>
+              </div>
+              <span class="history-item__amount history-item__amount--plus">+ $500</span>
+            </div>
+            <div class="history-item">
+              <div class="history-item__left">
+                <div class="history-tag"><span class="history-dot history-dot--yellow"></span>DESIGN</div>
+                <p class="history-item__desc">Standardized spacing tokens across the component set.</p>
+              </div>
+              <span class="history-item__amount history-item__amount--minus">- $150</span>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const donut = document.getElementById("donutProgress");
+    const percentLabel = document.getElementById("donutPercent");
+    const editBtn = document.getElementById("editBudgetBtn");
+    const modalOverlay = document.getElementById("editModalOverlay");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const cancelBtn = document.getElementById("cancelBtn");
+    const saveBtn = document.getElementById("saveBtn");
+    const inputTotal = document.getElementById("inputTotalBudget");
+    const inputSpent = document.getElementById("inputAmountSpent");
+    const inputExplanation = document.getElementById("inputExplanation");
+    const modalRemaining = document.getElementById("modalRemaining");
+    const mainAmount = document.getElementById("mainAmount");
+    const mainSubamount = document.getElementById("mainSubamount");
+    const mainExplanation = document.getElementById("mainExplanation");
+    const openHistoryBtn = document.getElementById("openHistoryBtn");
+    const historyModalOverlay = document.getElementById("historyModalOverlay");
+    const closeHistoryBtn = document.getElementById("closeHistoryBtn");
+    const historyMonthLabel = document.getElementById("historyMonthLabel");
+    const historyScroll = document.querySelector(".history-modal__scroll");
+    const historyGroups = Array.from(document.querySelectorAll(".history-group"));
+
+    // Segment ratio of "used" portion: design 40, dev 25, test 15 (out of 80)
+    const SEGMENT_RATIO = { design: 40 / 80, development: 25 / 80, testing: 15 / 80 };
+
+    function parseNum(str) {
+      const n = parseInt(String(str).replace(/\D/g, ""), 10);
+      return isNaN(n) ? 0 : n;
+    }
+
+    function formatMoney(n) {
+      return n.toLocaleString();
+    }
+
+    function updateModalRemaining() {
+      const total = parseNum(inputTotal.value);
+      const spent = parseNum(inputSpent.value);
+      const remaining = Math.max(0, total - spent);
+      modalRemaining.textContent = "$" + formatMoney(remaining);
+    }
+
+    function setDonutFromUsedPercent(usedPercent) {
+      usedPercent = Math.min(100, Math.max(0, usedPercent));
+      const design = (usedPercent * SEGMENT_RATIO.design);
+      const development = (usedPercent * SEGMENT_RATIO.development);
+      const testing = (usedPercent * SEGMENT_RATIO.testing);
+      const degDesign = (design / 100) * 360;
+      const degDevelopment = (development / 100) * 360;
+      const degTesting = (testing / 100) * 360;
+      const degUsed = degDesign + degDevelopment + degTesting;
+
+      donut.style.background =
+        "radial-gradient(circle at center, var(--card-bg) 52%, transparent 53%)," +
+        "conic-gradient(" +
+        "var(--yellow) 0deg, var(--yellow) " + degDesign + "deg," +
+        "var(--blue) " + degDesign + "deg, var(--blue) " + (degDesign + degDevelopment) + "deg," +
+        "var(--green) " + (degDesign + degDevelopment) + "deg, var(--green) " + degUsed + "deg," +
+        "transparent " + degUsed + "deg, transparent 360deg" +
+        ")";
+      const rounded = Math.round(usedPercent);
+      percentLabel.textContent = rounded + "%";
+
+      // Color rules for the percent text:
+      // < 40% => green, 40–70% => yellow, > 70% => red
+      if (rounded < 40) {
+        percentLabel.style.color = "var(--green)";
+      } else if (rounded <= 70) {
+        percentLabel.style.color = "var(--yellow)";
+      } else {
+        percentLabel.style.color = "var(--orange)";
+      }
+    }
+
+    function updateDonutAnimated(targetUsedPercent) {
+      targetUsedPercent = Math.min(100, Math.max(0, targetUsedPercent));
+      const designTarget = targetUsedPercent * SEGMENT_RATIO.design;
+      const developmentTarget = targetUsedPercent * SEGMENT_RATIO.development;
+      const testingTarget = targetUsedPercent * SEGMENT_RATIO.testing;
+      let designCurrent = 0, developmentCurrent = 0, testingCurrent = 0;
+      const step = 0.8;
+      const intervalMs = 16;
+
+      const timer = setInterval(() => {
+        let done = true;
+        if (designCurrent < designTarget) {
+          designCurrent = Math.min(designCurrent + step, designTarget);
+          done = false;
+        }
+        if (developmentCurrent < developmentTarget) {
+          developmentCurrent = Math.min(developmentCurrent + step, developmentTarget);
+          done = false;
+        }
+        if (testingCurrent < testingTarget) {
+          testingCurrent = Math.min(testingCurrent + step, testingTarget);
+          done = false;
+        }
+        const totalUsed = designCurrent + developmentCurrent + testingCurrent;
+        setDonutFromUsedPercent(totalUsed);
+        if (done) clearInterval(timer);
+      }, intervalMs);
+    }
+
+    function openModal() {
+      const total = parseNum(inputTotal.value);
+      const spent = parseNum(inputSpent.value);
+      inputTotal.value = total === 0 ? "" : formatMoney(total);
+      inputSpent.value = spent === 0 ? "" : formatMoney(spent);
+      updateModalRemaining();
+      modalOverlay.classList.add("is-open");
+      modalOverlay.setAttribute("aria-hidden", "false");
+    }
+
+    function closeModal() {
+      modalOverlay.classList.remove("is-open");
+      modalOverlay.setAttribute("aria-hidden", "true");
+    }
+
+    function openHistoryModal() {
+      historyModalOverlay.classList.add("is-open");
+      historyModalOverlay.setAttribute("aria-hidden", "false");
+      updateHistoryMonthLabel();
+    }
+
+    function closeHistoryModal() {
+      historyModalOverlay.classList.remove("is-open");
+      historyModalOverlay.setAttribute("aria-hidden", "true");
+    }
+
+    function updateHistoryMonthLabel() {
+      if (!historyScroll || !historyGroups.length || !historyMonthLabel) return;
+      const currentScroll = historyScroll.scrollTop + 24;
+      let currentGroup = historyGroups[0];
+
+      for (const group of historyGroups) {
+        if (group.offsetTop <= currentScroll) {
+          currentGroup = group;
+        } else {
+          break;
+        }
+      }
+
+      const month = currentGroup.getAttribute("data-month");
+      if (month) historyMonthLabel.textContent = month;
+    }
+
+    editBtn.addEventListener("click", openModal);
+    openHistoryBtn.addEventListener("click", openHistoryModal);
+    closeHistoryBtn.addEventListener("click", closeHistoryModal);
+    closeModalBtn.addEventListener("click", closeModal);
+    cancelBtn.addEventListener("click", closeModal);
+    modalOverlay.addEventListener("click", function (e) {
+      if (e.target === modalOverlay) closeModal();
+    });
+    historyModalOverlay.addEventListener("click", function (e) {
+      if (e.target === historyModalOverlay) closeHistoryModal();
+    });
+    historyScroll.addEventListener("scroll", updateHistoryMonthLabel);
+    inputTotal.addEventListener("input", updateModalRemaining);
+    inputSpent.addEventListener("input", updateModalRemaining);
+
+    // Add commas when the user leaves the field
+    inputTotal.addEventListener("blur", function () {
+      const v = parseNum(inputTotal.value);
+      inputTotal.value = v ? formatMoney(v) : "";
+      updateModalRemaining();
+    });
+
+    inputSpent.addEventListener("blur", function () {
+      const v = parseNum(inputSpent.value);
+      inputSpent.value = v ? formatMoney(v) : "";
+      updateModalRemaining();
+    });
+
+    saveBtn.addEventListener("click", function () {
+      const total = parseNum(inputTotal.value);
+      const spent = parseNum(inputSpent.value);
+      const remaining = Math.max(0, total - spent);
+      const explanation = inputExplanation.value.trim();
+
+      if (total <= 0) {
+        inputTotal.focus();
+        return;
+      }
+
+      mainAmount.textContent = "$" + formatMoney(remaining);
+      mainSubamount.textContent = "[ " + formatMoney(spent) + " of " + formatMoney(total) + " spent ]";
+      mainExplanation.textContent = explanation || mainExplanation.textContent;
+
+      const usedPercent = total > 0 ? (spent / total) * 100 : 0;
+      updateDonutAnimated(usedPercent);
+
+      closeModal();
+    });
+
+    // Initial load: animate donut to 80% (45% of total = 50k spent of 50k would be 100%; we start 22.5/50 = 45%)
+    const initialTotal = 50000, initialSpent = 22500;
+    const initialUsed = initialTotal > 0 ? (initialSpent / initialTotal) * 100 : 0;
+    updateDonutAnimated(initialUsed);
+  </script>
+</body>
+</html>
+
