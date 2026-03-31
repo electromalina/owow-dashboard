@@ -154,28 +154,45 @@
     }
 
     .budget-card__history-btn {
-      border: none;
+      border: 1px solid rgba(226, 226, 226, 0.3);
+      border-radius: 8px;
       background: transparent;
-      color: var(--color-accent-warning);
-      font-family: "PP Neue Montreal", system-ui, sans-serif;
-      font-size: 15px;
+      color: var(--white);
+      font-family: "PP Neue Montreal Mono", ui-monospace, monospace;
+      font-size: 8px;
       cursor: pointer;
       padding: 0;
-      line-height: 1;
-      display: block;
-      margin: 24px auto 0;
+      line-height: 10px;
+      width: 75.5px;
+      height: 25px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
     }
 
     .budget-card__history-btn:hover {
-      color: #ffd24a;
+      border-color: rgba(255, 255, 255, 0.5);
     }
 
     .budget-card__header-icon {
       font-family: "Material Symbols Outlined", sans-serif;
       color: #FFF;
-      font-size: 22px;
+      font-size: 13px;
       cursor: pointer;
       font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+    }
+
+    .icon-btn {
+      width: 25px;
+      height: 25px;
+      border: 1px solid rgba(226, 226, 226, 0.3);
+      border-radius: 8px;
+      background: transparent;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
     }
 
     .budget-card__amount-block {
@@ -720,62 +737,64 @@
     .history-item__amount--minus { color: var(--color-accent-danger); }
   </style>
 </head>
-<body class="m-0 min-h-screen flex items-center justify-center bg-black font-sans text-text-primary">
-  <div class="budget-card w-[420px] rounded-[5px] border border-border bg-surface px-9 pt-8 pb-9 text-text-primary shadow-[0_16px_40px_rgba(0,0,0,0.5)]">
+<body class="m-0 min-h-screen flex items-center justify-center bg-black font-sans text-text-primary p-4">
+  <div class="budget-card h-[425px] w-[370px] rounded-[5px] border border-border bg-surface px-[18px] pt-[23px] pb-6 text-text-primary shadow-[0_16px_40px_rgba(0,0,0,0.5)]">
     <div class="budget-card__header mb-5 flex items-start justify-between">
       <div class="budget-card__title flex flex-col gap-1">
-        <span class="budget-card__title-main font-display text-base font-normal text-text-primary">Current Balance</span>
-        <span class="budget-card__subtitle text-[11px] text-accent-positive">● Updated 1 month ago</span>
+        <span class="budget-card__title-main font-display text-[20px] font-normal text-text-primary">Current Balance</span>
+        <span class="budget-card__subtitle text-[9px] text-accent-positive">● Updated 1 h ago</span>
       </div>
-      <span class="material-symbols-outlined budget-card__header-icon cursor-pointer text-[22px] text-text-primary" id="editBudgetBtn" aria-hidden="true" title="Edit budget">edit</span>
+      <div class="flex items-center gap-[6px]">
+        <button type="button" class="budget-card__history-btn" id="openHistoryBtn">History</button>
+        <button type="button" class="icon-btn material-symbols-outlined budget-card__header-icon" id="editBudgetBtn" aria-label="Edit budget" title="Edit budget">edit</button>
+      </div>
     </div>
 
     <div class="budget-card__amount-block mt-6 text-center">
-      <div class="budget-card__month mb-1 font-display text-base font-normal text-white/50">March</div>
-      <div class="budget-card__amount mb-1 font-sans text-5xl font-medium tracking-[-1.592px]" id="mainAmount">$27,500</div>
-      <div class="budget-card__subamount mb-6 text-center text-xs text-text-muted" id="mainSubamount">[ 22,500 of 50,000 spent ]</div>
+      <div class="budget-card__month mb-1 font-display text-[12px] font-normal text-white/70">March</div>
+      <div class="budget-card__amount mb-1 font-sans text-[36px] font-medium tracking-[-1.1942px]" id="mainAmount">$27,500</div>
+      <div class="budget-card__subamount mb-5 text-center text-[9px] text-text-muted" id="mainSubamount">[ $22,500 of $50,000 spent ]</div>
     </div>
 
-    <div class="budget-card__center mb-5 flex flex-col items-center gap-3">
-      <div class="donut-wrapper relative mt-3 flex h-[140px] w-[140px] items-center justify-center">
+    <div class="budget-card__center mb-4 flex flex-col items-center gap-3">
+      <div class="donut-wrapper relative mt-[6px] flex h-[136px] w-[136px] items-center justify-center">
         <div class="donut-bg absolute h-full w-full rounded-full"></div>
         <div class="donut-progress absolute h-full w-full rounded-full" id="donutProgress"></div>
         <div class="donut-center-label relative text-center font-mono">
-          <div class="donut-center-label__percent mb-0.5 text-[22px] text-accent-danger" id="donutPercent">70%</div>
-          <div class="donut-center-label__text text-xs text-text-muted">used</div>
+          <div class="donut-center-label__percent mb-0 text-[12px] leading-none text-accent-danger" id="donutPercent">70%</div>
+          <div class="donut-center-label__text text-[12px] leading-none text-accent-danger" id="donutUsedLabel">used</div>
         </div>
       </div>
 
-      <div class="legend mt-2 flex justify-center gap-[18px] text-[11px]">
-        <div class="legend-item flex items-center gap-1.5 font-mono text-text-secondary">
+      <div class="legend mt-1 flex justify-center gap-[22px] text-[8px]">
+        <div class="legend-item flex items-center gap-1 font-mono text-text-secondary">
           <div class="legend-dot legend-dot--yellow h-2 w-2 rounded-full"></div>
           <span>Design</span>
         </div>
-        <div class="legend-item flex items-center gap-1.5 font-mono text-text-secondary">
+        <div class="legend-item flex items-center gap-1 font-mono text-text-secondary">
           <div class="legend-dot legend-dot--blue h-2 w-2 rounded-full"></div>
           <span>Development</span>
         </div>
-        <div class="legend-item flex items-center gap-1.5 font-mono text-text-secondary">
+        <div class="legend-item flex items-center gap-1 font-mono text-text-secondary">
           <div class="legend-dot legend-dot--green h-2 w-2 rounded-full"></div>
           <span>Testing</span>
         </div>
       </div>
     </div>
 
-    <div class="budget-card__footer text-center text-[13px] leading-[1.45] text-text-secondary" id="mainExplanation">
+    <div class="budget-card__footer mx-auto max-w-[222px] text-center text-[9px] leading-[normal] text-text-secondary" id="mainExplanation">
       Spending increased this month due to additional development hours required for feature refinement.
     </div>
-    <button type="button" class="budget-card__history-btn mx-auto mt-6 block cursor-pointer bg-transparent p-0 text-[15px] leading-none text-accent-warning hover:text-[#ffd24a]" id="openHistoryBtn">History</button>
   </div>
 
   <!-- Edit budget modal -->
   <div class="edit-modal-overlay fixed inset-0 z-[1000] hidden items-center justify-center bg-black/70 p-4 [&.is-open]:flex" id="editModalOverlay" aria-hidden="true">
-    <div class="edit-modal h-[737px] w-[90%] max-w-[430px] overflow-hidden rounded-[5px] border border-border bg-surface px-6 pt-7 pb-5 text-text-primary" role="dialog" aria-labelledby="editModalTitle">
+    <div class="edit-modal h-[637px] w-[90%] max-w-[430px] overflow-hidden rounded-[5px] border border-border bg-surface px-6 pt-7 pb-5 text-text-primary" role="dialog" aria-labelledby="editModalTitle">
       <div class="edit-modal__header mb-5 flex items-center justify-between">
         <h2 class="edit-modal__title m-0 font-display text-2xl font-normal leading-[1.1]" id="editModalTitle">Budget overview</h2>
         <button type="button" class="edit-modal__close material-symbols-outlined cursor-pointer border-none bg-transparent text-2xl text-text-primary" id="closeModalBtn" aria-label="Close">close</button>
       </div>
-      <div class="edit-modal__remaining mb-6 text-center font-sans text-5xl font-medium tracking-[-1.592px]" id="modalRemaining">$27,500</div>
+      <div class="edit-modal__remaining" id="modalRemaining">$27,500</div>
 
       <div class="edit-modal__section">
         <div class="edit-modal__section-title">
@@ -1024,6 +1043,7 @@
   <script>
     const donut = document.getElementById("donutProgress");
     const percentLabel = document.getElementById("donutPercent");
+    const usedLabel = document.getElementById("donutUsedLabel");
     const editBtn = document.getElementById("editBudgetBtn");
     const modalOverlay = document.getElementById("editModalOverlay");
     const closeModalBtn = document.getElementById("closeModalBtn");
@@ -1087,10 +1107,13 @@
       // < 40% => green, 40–70% => yellow, > 70% => red
       if (rounded < 40) {
         percentLabel.style.color = "var(--green)";
+        if (usedLabel) usedLabel.style.color = "var(--green)";
       } else if (rounded <= 70) {
         percentLabel.style.color = "var(--yellow)";
+        if (usedLabel) usedLabel.style.color = "var(--yellow)";
       } else {
         percentLabel.style.color = "var(--orange)";
+        if (usedLabel) usedLabel.style.color = "var(--orange)";
       }
     }
 
