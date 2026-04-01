@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Updates</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --widget-bg: #1b1b1b;
+      --widget-border: #303030;
+      --card-bg: #262626;
+      --chip-bg: #1b1b1b;
+      --text: #ffffff;
+      --text-muted: #8b8b8b;
+      --text-time: #777777;
+      --chip-text: #d0d2cc;
+      --line-grey: #737373;
+      --line-amber: #f5be0b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0d0d0d;
+      font-family: "Instrument Sans", system-ui, sans-serif;
+      color: var(--text);
+    }
+
+    .widget {
+      width: 374px;
+      min-height: 673px;
+      padding: 32px 46px 32px 46px;
+      border: 0.89px solid var(--widget-border);
+      border-radius: 8px;
+      background: #1b1b1b;
+      position: relative;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 500;
+      line-height: normal;
+      color: #ffffff;
+    }
+
+    .view-all {
+      border: none;
+      border-radius: 4px;
+      background: var(--card-bg);
+      color: #fbfbfb;
+      font-family: "DM Mono", monospace;
+      font-size: 7px;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      line-height: 1;
+      height: 19px;
+      padding: 0 8px;
+    }
+
+    .timeline-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .timeline-list::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 278px;
+      width: 1.5px;
+      background: var(--line-amber);
+      border-radius: 999px;
+      pointer-events: none;
+    }
+
+    .item {
+      position: relative;
+      width: 256px;
+      min-height: 67px;
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 9px 11px 10px;
+      margin-bottom: 13.5px;
+    }
+
+    .item--small {
+      min-height: 46px;
+      border-radius: 5px;
+      background: rgba(38, 38, 38, 0.58);
+      margin-bottom: 16.5px;
+      padding-top: 8px;
+    }
+
+    .item__top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+      gap: 8px;
+    }
+
+    .chips {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      max-width: 165px;
+    }
+
+    .chip {
+      background: var(--chip-bg);
+      color: var(--chip-text);
+      border-radius: 1px;
+      font-family: "DM Mono", monospace;
+      font-size: 5.5px;
+      font-weight: 400;
+      text-transform: uppercase;
+      line-height: normal;
+      min-height: 9.5px;
+      padding: 2px 3.5px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .time {
+      color: var(--text-time);
+      font-family: "DM Mono", monospace;
+      font-size: 8px;
+      font-weight: 400;
+      line-height: 1;
+      margin-top: 1px;
+      white-space: nowrap;
+    }
+
+    .item__title {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: normal;
+    }
+
+    .item__title--dim {
+      color: #8f8f8f;
+    }
+
+    .item__desc {
+      margin: 7px 0 0;
+      color: var(--text-muted);
+      font-size: 10px;
+      font-weight: 400;
+      line-height: normal;
+    }
+
+    .month {
+      margin: 10px 0 11px;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: normal;
+      color: #ffffff;
+      position: relative;
+      z-index: 1;
+    }
+
+    .dot {
+      position: absolute;
+      left: 274px;
+      top: 50%;
+      width: 9.5px;
+      height: 9.5px;
+      border-radius: 50%;
+      transform: translateY(-50%);
+      border: 1.5px solid var(--line-amber);
+      background: var(--widget-bg);
+      z-index: 2;
+      transition: transform 0.18s ease, background-color 0.18s ease, border-color 0.18s ease;
+    }
+
+    .dot--grey {
+      border-color: #8b8b8b;
+    }
+
+    .dot--solid {
+      background: var(--line-amber);
+      border-color: var(--line-amber);
+    }
+
+    .item:hover .dot {
+      transform: translateY(-50%) scale(1.18);
+      background: var(--line-amber);
+      border-color: var(--line-amber);
+    }
+  </style>
+</head>
+<body>
+  <section class="widget" aria-labelledby="updates-title">
+    <header class="header">
+      <h1 id="updates-title" class="title">Updates</h1>
+      <button class="view-all" type="button">VIEW ALL</button>
+    </header>
+
+    <ul class="timeline-list">
+      <li class="item item--small">
+        <div class="item__top">
+          <div class="chips"><span class="chip">UI/UX</span></div>
+        </div>
+        <p class="item__title item__title--dim">Prototype to App</p>
+        <div class="dot dot--grey" aria-hidden="true"></div>
+      </li>
+
+      <li class="item">
+        <div class="item__top">
+          <div class="chips"><span class="chip">RESEARCH</span></div>
+          <span class="time">3h Ago</span>
+        </div>
+        <p class="item__title">Editing homepage</p>
+        <p class="item__desc">Add acceptance criteria.</p>
+        <div class="dot dot--solid" aria-hidden="true"></div>
+      </li>
+
+      <li class="item">
+        <div class="item__top">
+          <div class="chips">
+            <span class="chip">STRATEGY</span><span class="chip">TECH</span><span class="chip">SOFTWARE</span>
+          </div>
+          <span class="time">9h Ago</span>
+        </div>
+        <p class="item__title">Review Required</p>
+        <p class="item__desc">Content for the Page needs approval.</p>
+        <div class="dot" aria-hidden="true"></div>
+      </li>
+
+      <li class="item">
+        <div class="item__top">
+          <div class="chips"><span class="chip">BUDGET</span><span class="chip">TECH</span></div>
+          <span class="time">1d Ago</span>
+        </div>
+        <p class="item__title">Payment Processed</p>
+        <p class="item__desc">Payment of 600&#8364; has been received.</p>
+        <div class="dot" aria-hidden="true"></div>
+      </li>
+    </ul>
+
+    <p class="month">April</p>
+
+    <ul class="timeline-list">
+      <li class="item">
+        <div class="item__top">
+          <div class="chips"><span class="chip">RESEARCH</span></div>
+          <span class="time">3h Ago</span>
+        </div>
+        <p class="item__title">Editing homepage</p>
+        <p class="item__desc">Add acceptance criteria.</p>
+        <div class="dot" aria-hidden="true"></div>
+      </li>
+
+      <li class="item">
+        <div class="item__top">
+          <div class="chips">
+            <span class="chip">STRATEGY</span><span class="chip">TECH</span><span class="chip">SOFTWARE</span>
+          </div>
+          <span class="time">9h Ago</span>
+        </div>
+        <p class="item__title">Review Required</p>
+        <p class="item__desc">Content for the Page needs approval.</p>
+        <div class="dot" aria-hidden="true"></div>
+      </li>
+
+      <li class="item" style="margin-bottom: 0;">
+        <div class="item__top">
+          <div class="chips"><span class="chip">BUDGET</span><span class="chip">TECH</span></div>
+          <span class="time">1d Ago</span>
+        </div>
+        <p class="item__title">Payment Processed</p>
+        <p class="item__desc">Payment of 600&#8364; has been received.</p>
+        <div class="dot" aria-hidden="true"></div>
+      </li>
+    </ul>
+  </section>
+</body>
+</html>
