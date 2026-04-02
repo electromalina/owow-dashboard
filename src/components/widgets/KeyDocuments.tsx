@@ -42,7 +42,7 @@ export default function KeyDocuments() {
         <a
           href="/documents"
           className="rounded-full border border-blue px-4 py-1.5 text-xs text-blue transition-colors hover:bg-blue/10">
-          View all
+          View all  ↗
         </a>
       </div>
 
@@ -65,8 +65,10 @@ export default function KeyDocuments() {
             >
               {cat.label}
               <span
-                className={`ml-1.5 text-xs ${
-                  isActive ? "text-yellow" : "text-off-white"
+                className={`ml-1.5 rounded-md px-1.5 py-0.5 text-xs ${
+                  isActive
+                    ? "bg-yellow/20 text-yellow"
+                    : "bg-off-white/10 text-off-white"
                 }`}
               >
                 {cat.documents.length}

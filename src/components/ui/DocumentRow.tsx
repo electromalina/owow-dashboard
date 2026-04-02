@@ -15,7 +15,7 @@ export default function DocumentRow({ doc }: { doc: Document }) {
         </div>
         <div>
           <p className="font-medium text-white">{doc.name}</p>
-          <p className="text-xs text-off-white">
+          <p className="font-mono text-xs text-off-white">
             {doc.type}
             {doc.size && <span> · {doc.size}</span>}
             <span> · {doc.date}</span>
