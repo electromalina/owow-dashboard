@@ -5,6 +5,10 @@ import { useState } from "react";
 
 // import mock data and types from the shared data file
 import { documentCategories } from "@/src/data/documents";
+//olny show 3 categories and max 3 doc in each
+const WIDGET_CATEGORIES = documentCategories.slice(0, 3);
+const MAX_DOCS = 3;
+
 
 
 import DocumentRow from "@/src/components/ui/DocumentRow";
@@ -15,12 +19,12 @@ export default function KeyDocuments() {
   // activeTab stores the current category id ("proposal", "prd", "assets")
   // setActiveTab is the function to change it
   // default to the first category in data
-  const [activeTab, setActiveTab] = useState(documentCategories[0].id);
+  const [activeTab, setActiveTab] = useState(WIDGET_CATEGORIES[0].id);
 
 
   // Find the full category object that matches the active tab
   // .find() loops through the array and returns the first match
-  const activeCategory = documentCategories.find(
+  const activeCategory = WIDGET_CATEGORIES.find(
     (cat) => cat.id === activeTab
   );
 
@@ -48,8 +52,8 @@ export default function KeyDocuments() {
 
       {/* TAB NAVIGATION */}
 
-      <div className="mt-5 flex gap-6 border-b border-off-white/20">
-        {documentCategories.map((cat) => {
+      <div className="mt-5 -mx-6 flex gap-6 border-b border-off-white/20 px-6">
+        {WIDGET_CATEGORIES.map((cat) => {
           // Check if this tab is the currently active one
           const isActive = cat.id === activeTab;
 
@@ -85,7 +89,7 @@ export default function KeyDocuments() {
 
       {/* DOCUMENT LIST */}
       <div className="mt-2">
-        {activeCategory?.documents.map((doc) => (
+        {activeCategory?.documents.slice(0, MAX_DOCS).map((doc) => (
           <DocumentRow key={doc.id} doc={doc} />
         ))}
       </div>
