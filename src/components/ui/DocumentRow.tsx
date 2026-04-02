@@ -3,7 +3,7 @@ import StatusBadge from "./StatusBadge";
 
 export default function DocumentRow({ doc }: { doc: Document }) {
   return (
-    <div className="flex items-center justify-between border-b border-off-white/20 py-4">
+    <div className="flex items-center justify-between border-b border-off-white/20 py-4 -mx-6 px-6">
       {/* Left: icon + info */}
       <div className="flex items-center gap-3">
         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-off-white/10">
