@@ -1,3 +1,5 @@
+import { BudgetSnapshotWidget } from "@/src/components/budget-snapshot/BudgetSnapshotWidget";
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-background text-foreground">
@@ -26,6 +28,10 @@ export default function Home() {
               Admin-only pages live here.
             </div>
           </a>
+        </div>
+
+        <div className="mt-10 flex justify-center">
+          <BudgetSnapshotWidget />
         </div>
 
         <div className="mt-10">
