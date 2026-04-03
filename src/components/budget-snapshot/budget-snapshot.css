@@ -1,0 +1,410 @@
+/* Scoped theme + widget styles (from index-client.html prototype) */
+.budget-snapshot,
+.budget-snapshot * {
+  box-sizing: border-box;
+}
+
+.budget-snapshot {
+  --color-text-primary: #ffffff;
+  --color-text-secondary: rgba(255, 255, 255, 0.7);
+  --color-text-muted: #8d8d8d;
+  --color-surface: #1b1b1b;
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-accent-positive: #018848;
+  --color-accent-info: #0988ef;
+  --color-accent-warning: #feb800;
+  --color-accent-danger: #ff573b;
+
+  --white: var(--color-text-primary);
+  --white-70: var(--color-text-secondary);
+  --gray-mid: var(--color-text-muted);
+  --green: var(--color-accent-positive);
+  --blue: var(--color-accent-info);
+  --yellow: var(--color-accent-warning);
+  --orange: var(--color-accent-danger);
+  --card-bg: var(--color-surface);
+  --BORDER: var(--color-border);
+}
+
+.budget-card {
+  width: 370px;
+  height: 425px;
+  background: #1b1b1b;
+  border-radius: 5px;
+  border: 1px solid var(--color-border);
+  padding: 23px 18px 24px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  color: var(--color-text-primary);
+}
+
+.budget-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.budget-card__title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Card type sizes match index-client.html body utilities (not the older <style> block). */
+.budget-card__title-main {
+  color: #fff;
+  font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.budget-card__subtitle {
+  color: var(--color-accent-positive);
+  font-size: 9px;
+}
+
+.budget-card__history-btn {
+  border: 1px solid rgba(226, 226, 226, 0.3);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--white);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 8px;
+  cursor: pointer;
+  width: 75.5px;
+  height: 25px;
+  padding: 0;
+  line-height: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+.budget-card__history-btn:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.budget-card__header-icon {
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+}
+
+.budget-card__amount-block {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.budget-card__month {
+  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: 4px;
+}
+
+.budget-card__amount {
+  color: #fff;
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -1.1942px;
+  margin-bottom: 4px;
+}
+
+.budget-card__subamount {
+  font-size: 9px;
+  color: var(--color-text-muted);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.budget-card__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.donut-wrapper {
+  width: 136px;
+  height: 136px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+.donut-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center, var(--color-surface) 52%, transparent 53%),
+    #2a2a2a;
+  background-position: center;
+}
+
+.donut-progress {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  transition: background 0.6s ease-out;
+}
+
+.donut-center-label {
+  position: relative;
+  text-align: center;
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+.donut-center-label__percent {
+  font-size: 12px;
+  line-height: 1;
+  margin-bottom: 0;
+}
+
+.donut-center-label__text {
+  font-size: 12px;
+  line-height: 1;
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  font-size: 8px;
+  margin-top: 4px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 8px;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.legend-dot--yellow {
+  background: var(--color-accent-warning);
+}
+
+.legend-dot--blue {
+  background: var(--color-accent-info);
+}
+
+.legend-dot--green {
+  background: var(--color-accent-positive);
+}
+
+.budget-card__footer {
+  margin-top: 24px;
+  max-width: 222px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 9px;
+  line-height: normal;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+.budget-card__footer strong {
+  color: var(--white-70);
+  font-weight: 500;
+}
+
+.history-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+}
+
+.history-modal {
+  width: 90%;
+  max-width: 430px;
+  height: 737px;
+  background: #000;
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  padding: 28px 24px 20px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.history-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.history-modal__title {
+  margin: 0;
+  font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.history-modal__close {
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+}
+
+.history-modal__month {
+  color: var(--color-accent-warning);
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-size: 20px;
+  margin: 0 0 14px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.history-modal__scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: #262626 rgba(255, 255, 255, 0.25);
+}
+
+.history-modal__scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.history-modal__scroll::-webkit-scrollbar-track {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 100px;
+}
+
+.history-modal__scroll::-webkit-scrollbar-thumb {
+  background: #262626;
+  border: 1px solid var(--color-border);
+  border-radius: 100px;
+}
+
+.history-group {
+  margin: 0 0 14px;
+}
+
+.history-group__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 12px;
+  color: #fff;
+  letter-spacing: 0.02em;
+  width: min(100%, 326px);
+}
+
+.history-group__sum {
+  color: #bbb;
+}
+
+.history-card {
+  background: #1b1b1b;
+  border: 1px solid var(--BORDER);
+  border-radius: 5px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  width: min(100%, 326px);
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.history-item:last-child {
+  margin-bottom: 0;
+}
+
+.history-item__left {
+  min-width: 0;
+}
+
+.history-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  color: #e2e2e2;
+  font-size: 8px;
+  margin-bottom: 4px;
+}
+
+.history-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.history-dot--yellow {
+  background: var(--color-accent-warning);
+}
+
+.history-dot--blue {
+  background: var(--color-accent-info);
+}
+
+.history-dot--green {
+  background: var(--color-accent-positive);
+}
+
+.history-item__desc {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.history-item__amount {
+  font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+  font-size: 18px;
+  line-height: 1;
+  white-space: nowrap;
+  margin-top: 2px;
+}
+
+.history-item__amount--plus {
+  color: var(--color-accent-positive);
+}
+
+.history-item__amount--minus {
+  color: var(--color-accent-danger);
+}

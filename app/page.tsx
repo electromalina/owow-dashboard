@@ -1,4 +1,5 @@
 import { CardPlaceholder } from "@/src/components/ui/CardPlaceholder";
+import { BudgetSnapshotWidget } from "@/src/components/budget-snapshot/BudgetSnapshotWidget";
 // Home page content area composed of placeholder cards for noww.
 
 export default function Home() {
@@ -13,7 +14,9 @@ export default function Home() {
 
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(280px,1fr)]">
         <CardPlaceholder className="min-h-72" />
-        <CardPlaceholder className="min-h-72" />
+        <div className="flex min-h-72 justify-center lg:items-start">
+          <BudgetSnapshotWidget />
+        </div>
         <CardPlaceholder className="min-h-72" />
       </div>
     </>
