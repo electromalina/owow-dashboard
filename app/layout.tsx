@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Footer } from "@/src/components/Footer";
+import { Sidebar } from "@/src/components/Sidebar";
+import { Header } from "@/src/components/Header";
 import "./globals.css";
+// Root app shell: fonts, header/sidebar frame, page content, and footer.
 
 const ppNeueMontrealBook = localFont({
   variable: "--font-body",
@@ -50,7 +54,20 @@ export default function RootLayout({
       <body
         className={`${ppNeueMontrealBook.variable} ${ppNeueMontrealMedium.variable} ${ppNeueMontrealMono.variable} antialiased`}
       >
-        {children}
+        <main className="min-h-screen bg-background text-foreground">
+          <div className="mx-auto flex min-h-screen w-full max-w-[1520px] flex-col px-4 py-5 lg:px-8">
+            <Header />
+
+            <div className="flex flex-1 flex-col gap-6 lg:grid lg:grid-cols-[220px_minmax(0,1fr)]">
+              <section className="hidden lg:block">
+                <Sidebar />
+              </section>
+              <section className="space-y-4 lg:pr-6">{children}</section>
+            </div>
+
+            <Footer />
+          </div>
+        </main>
       </body>
     </html>
   );
