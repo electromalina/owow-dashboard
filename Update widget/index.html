@@ -78,6 +78,15 @@
       line-height: 1;
       height: 19px;
       padding: 0 8px;
+      cursor: pointer;
+      transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+    }
+
+    .view-all:hover {
+      background: #ffffff;
+      color: #0c0c0c;
     }
 
     .timeline-stack {
@@ -196,6 +205,26 @@
       border-radius: 8px;
       padding: 9px 11px 10px;
       margin-bottom: 13.5px;
+      transition: background-color 0.65s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    .item > :not(.dot) {
+      transition: opacity 0.65s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    .timeline-stack:has(.item:hover) .item:not(:hover) {
+      background: var(--widget-bg);
+    }
+
+    .timeline-stack:has(.item:hover) .item:not(:hover) > :not(.dot) {
+      opacity: 0.42;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .item,
+      .item > :not(.dot) {
+        transition-duration: 0.01ms;
+      }
     }
 
     .item--small {
