@@ -129,14 +129,12 @@ export function BudgetSnapshotWidget() {
       <div className="budget-card">
         <div className="budget-card__header">
           <div className="budget-card__title">
-            <span className="budget-card__title-main font-[family-name:var(--font-heading)] text-[20px]">
-              Current Balance
-            </span>
-            <span className="budget-card__subtitle text-[9px]">● Updated 1 h ago</span>
+            <span className="budget-card__title-main">Current Balance</span>
+            <span className="budget-card__subtitle">● Updated 1 h ago</span>
           </div>
           <button
             type="button"
-            className="budget-card__history-btn font-[family-name:var(--font-mono)]"
+            className="budget-card__history-btn"
             onClick={() => setHistoryOpen(true)}
           >
             History
@@ -144,13 +142,9 @@ export function BudgetSnapshotWidget() {
         </div>
 
         <div className="budget-card__amount-block">
-          <div className="budget-card__month font-[family-name:var(--font-heading)] text-[12px]">
-            March
-          </div>
-          <div className="budget-card__amount font-[family-name:var(--font-heading)] text-[36px] tracking-[-1.1942px]">
-            $27,500
-          </div>
-          <div className="budget-card__subamount text-[9px]">
+          <div className="budget-card__month">March</div>
+          <div className="budget-card__amount">$27,500</div>
+          <div className="budget-card__subamount">
             [ $22,500 of $50,000 spent ]
           </div>
         </div>
@@ -162,15 +156,15 @@ export function BudgetSnapshotWidget() {
               className="donut-progress"
               style={{ background: donutBackground }}
             />
-            <div className="donut-center-label font-[family-name:var(--font-mono)]">
+            <div className="donut-center-label">
               <div
-                className="donut-center-label__percent text-[12px] leading-none"
+                className="donut-center-label__percent"
                 style={{ color: labelColors.percent }}
               >
                 {rounded}%
               </div>
               <div
-                className="donut-center-label__text text-[12px] leading-none"
+                className="donut-center-label__text"
                 style={{ color: labelColors.used }}
               >
                 used
@@ -178,23 +172,23 @@ export function BudgetSnapshotWidget() {
             </div>
           </div>
 
-          <div className="legend gap-[22px]">
-            <div className="legend-item font-[family-name:var(--font-mono)]">
-              <div className="legend-dot legend-dot--yellow h-2 w-2" />
+          <div className="legend">
+            <div className="legend-item">
+              <div className="legend-dot legend-dot--yellow" />
               <span>Design</span>
             </div>
-            <div className="legend-item font-[family-name:var(--font-mono)]">
-              <div className="legend-dot legend-dot--blue h-2 w-2" />
+            <div className="legend-item">
+              <div className="legend-dot legend-dot--blue" />
               <span>Development</span>
             </div>
-            <div className="legend-item font-[family-name:var(--font-mono)]">
-              <div className="legend-dot legend-dot--green h-2 w-2" />
+            <div className="legend-item">
+              <div className="legend-dot legend-dot--green" />
               <span>Testing</span>
             </div>
           </div>
         </div>
 
-        <div className="budget-card__footer mx-auto max-w-[222px] text-[9px] leading-[normal]">
+        <div className="budget-card__footer">
           Spending increased this month due to additional development hours required
           for feature refinement.
         </div>
@@ -217,7 +211,7 @@ export function BudgetSnapshotWidget() {
           >
             <div className="history-modal__header">
               <h2
-                className="history-modal__title font-[family-name:var(--font-heading)]"
+                className="history-modal__title"
                 id="historyModalTitle"
               >
                 Budget History
@@ -231,7 +225,7 @@ export function BudgetSnapshotWidget() {
                 close
               </button>
             </div>
-            <p className="history-modal__month font-[family-name:var(--font-body)]">
+            <p className="history-modal__month">
               {historyMonth}
             </p>
 
@@ -241,14 +235,14 @@ export function BudgetSnapshotWidget() {
               onScroll={updateHistoryMonthLabel}
             >
               <section className="history-group" data-month="March">
-                <div className="history-group__meta font-[family-name:var(--font-mono)]">
+                <div className="history-group__meta">
                   <span>[ TODAY ]</span>
                   <span className="history-group__sum">+ $900</span>
                 </div>
                 <div className="history-card">
                   <div className="history-item">
                     <div className="history-item__left">
-                      <div className="history-tag font-[family-name:var(--font-mono)]">
+                      <div className="history-tag">
                         <span className="history-dot history-dot--blue" />
                         DEVELOPMENT
                       </div>
@@ -256,13 +250,13 @@ export function BudgetSnapshotWidget() {
                         Increased scope for feature refinement
                       </p>
                     </div>
-                    <span className="history-item__amount history-item__amount--plus font-[family-name:var(--font-heading)]">
+                    <span className="history-item__amount history-item__amount--plus">
                       + $1000
                     </span>
                   </div>
                   <div className="history-item">
                     <div className="history-item__left">
-                      <div className="history-tag font-[family-name:var(--font-mono)]">
+                      <div className="history-tag">
                         <span className="history-dot history-dot--blue" />
                         DEVELOPMENT
                       </div>
@@ -270,7 +264,7 @@ export function BudgetSnapshotWidget() {
                         Reduce budget due to additional development hours
                       </p>
                     </div>
-                    <span className="history-item__amount history-item__amount--minus font-[family-name:var(--font-heading)]">
+                    <span className="history-item__amount history-item__amount--minus">
                       - $100
                     </span>
                   </div>
@@ -278,14 +272,14 @@ export function BudgetSnapshotWidget() {
               </section>
 
               <section className="history-group" data-month="March">
-                <div className="history-group__meta font-[family-name:var(--font-mono)]">
+                <div className="history-group__meta">
                   <span>[ MAR 15TH ]</span>
                   <span className="history-group__sum">+ $500</span>
                 </div>
                 <div className="history-card">
                   <div className="history-item">
                     <div className="history-item__left">
-                      <div className="history-tag font-[family-name:var(--font-mono)]">
+                      <div className="history-tag">
                         <span className="history-dot history-dot--yellow" />
                         DESIGN
                       </div>
@@ -293,7 +287,7 @@ export function BudgetSnapshotWidget() {
                         Increased scope for feature refinement.
                       </p>
                     </div>
-                    <span className="history-item__amount history-item__amount--plus font-[family-name:var(--font-heading)]">
+                    <span className="history-item__amount history-item__amount--plus">
                       + $500
                     </span>
                   </div>
@@ -301,14 +295,14 @@ export function BudgetSnapshotWidget() {
               </section>
 
               <section className="history-group" data-month="March">
-                <div className="history-group__meta font-[family-name:var(--font-mono)]">
+                <div className="history-group__meta">
                   <span>[ MAR 10TH ]</span>
                   <span className="history-group__sum">+ $2,200</span>
                 </div>
                 <div className="history-card">
                   <div className="history-item">
                     <div className="history-item__left">
-                      <div className="history-tag font-[family-name:var(--font-mono)]">
+                      <div className="history-tag">
                         <span className="history-dot history-dot--green" />
                         TESTING
                         <span
@@ -321,19 +315,19 @@ export function BudgetSnapshotWidget() {
                         Reallocated budget from testing to development.
                       </p>
                     </div>
-                    <span className="history-item__amount history-item__amount--plus font-[family-name:var(--font-heading)]">
+                    <span className="history-item__amount history-item__amount--plus">
                       + $2,500
                     </span>
                   </div>
                   <div className="history-item">
                     <div className="history-item__left">
-                      <div className="history-tag font-[family-name:var(--font-mono)]">
+                      <div className="history-tag">
                         <span className="history-dot history-dot--yellow" />
                         DESIGN
                       </div>
                       <p className="history-item__desc">Extra design iterations required</p>
                     </div>
-                    <span className="history-item__amount history-item__amount--minus font-[family-name:var(--font-heading)]">
+                    <span className="history-item__amount history-item__amount--minus">
                       - $300
                     </span>
                   </div>
@@ -341,14 +335,14 @@ export function BudgetSnapshotWidget() {
               </section>
 
               <section className="history-group" data-month="March">
-                <div className="history-group__meta font-[family-name:var(--font-mono)]">
+                <div className="history-group__meta">
                   <span>[ MAR 6TH ]</span>
                   <span className="history-group__sum">+ $1,000</span>
                 </div>
                 <div className="history-card">
                   <div className="history-item">
                     <div className="history-item__left">
-                      <div className="history-tag font-[family-name:var(--font-mono)]">
+                      <div className="history-tag">
                         <span className="history-dot history-dot--blue" />
                         DEVELOPMENT
                       </div>
@@ -356,13 +350,13 @@ export function BudgetSnapshotWidget() {
                         Added integration support for analytics and reporting API.
                       </p>
                     </div>
-                    <span className="history-item__amount history-item__amount--plus font-[family-name:var(--font-heading)]">
+                    <span className="history-item__amount history-item__amount--plus">
                       + $1,200
                     </span>
                   </div>
                   <div className="history-item">
                     <div className="history-item__left">
-                      <div className="history-tag font-[family-name:var(--font-mono)]">
+                      <div className="history-tag">
                         <span className="history-dot history-dot--green" />
                         TESTING
                       </div>
@@ -370,7 +364,7 @@ export function BudgetSnapshotWidget() {
                         Automated test coverage reduced manual QA hours.
                       </p>
                     </div>
-                    <span className="history-item__amount history-item__amount--minus font-[family-name:var(--font-heading)]">
+                    <span className="history-item__amount history-item__amount--minus">
                       - $200
                     </span>
                   </div>
@@ -378,14 +372,14 @@ export function BudgetSnapshotWidget() {
               </section>
 
               <section className="history-group" data-month="February">
-                <div className="history-group__meta font-[family-name:var(--font-mono)]">
+                <div className="history-group__meta">
                   <span>[ FEB 28TH ]</span>
                   <span className="history-group__sum">+ $400</span>
                 </div>
                 <div className="history-card">
                   <div className="history-item">
                     <div className="history-item__left">
-                      <div className="history-tag font-[family-name:var(--font-mono)]">
+                      <div className="history-tag">
                         <span className="history-dot history-dot--yellow" />
                         DESIGN
                       </div>
@@ -393,13 +387,13 @@ export function BudgetSnapshotWidget() {
                         Expanded dashboard states for empty, loading, and error views.
                       </p>
                     </div>
-                    <span className="history-item__amount history-item__amount--plus font-[family-name:var(--font-heading)]">
+                    <span className="history-item__amount history-item__amount--plus">
                       + $600
                     </span>
                   </div>
                   <div className="history-item">
                     <div className="history-item__left">
-                      <div className="history-tag font-[family-name:var(--font-mono)]">
+                      <div className="history-tag">
                         <span className="history-dot history-dot--yellow" />
                         DESIGN
                       </div>
@@ -407,7 +401,7 @@ export function BudgetSnapshotWidget() {
                         Streamlined icon set and removed duplicate assets.
                       </p>
                     </div>
-                    <span className="history-item__amount history-item__amount--minus font-[family-name:var(--font-heading)]">
+                    <span className="history-item__amount history-item__amount--minus">
                       - $200
                     </span>
                   </div>
@@ -415,14 +409,14 @@ export function BudgetSnapshotWidget() {
               </section>
 
               <section className="history-group" data-month="February">
-                <div className="history-group__meta font-[family-name:var(--font-mono)]">
+                <div className="history-group__meta">
                   <span>[ FEB 22ND ]</span>
                   <span className="history-group__sum">+ $1,300</span>
                 </div>
                 <div className="history-card">
                   <div className="history-item">
                     <div className="history-item__left">
-                      <div className="history-tag font-[family-name:var(--font-mono)]">
+                      <div className="history-tag">
                         <span className="history-dot history-dot--blue" />
                         DEVELOPMENT
                         <span
@@ -435,13 +429,13 @@ export function BudgetSnapshotWidget() {
                         Reworked build pipeline and test environments for release prep.
                       </p>
                     </div>
-                    <span className="history-item__amount history-item__amount--plus font-[family-name:var(--font-heading)]">
+                    <span className="history-item__amount history-item__amount--plus">
                       + $1,500
                     </span>
                   </div>
                   <div className="history-item">
                     <div className="history-item__left">
-                      <div className="history-tag font-[family-name:var(--font-mono)]">
+                      <div className="history-tag">
                         <span className="history-dot history-dot--green" />
                         TESTING
                       </div>
@@ -449,7 +443,7 @@ export function BudgetSnapshotWidget() {
                         Removed redundant regression test cycles.
                       </p>
                     </div>
-                    <span className="history-item__amount history-item__amount--minus font-[family-name:var(--font-heading)]">
+                    <span className="history-item__amount history-item__amount--minus">
                       - $200
                     </span>
                   </div>
@@ -457,14 +451,14 @@ export function BudgetSnapshotWidget() {
               </section>
 
               <section className="history-group" data-month="February">
-                <div className="history-group__meta font-[family-name:var(--font-mono)]">
+                <div className="history-group__meta">
                   <span>[ FEB 14TH ]</span>
                   <span className="history-group__sum">+ $700</span>
                 </div>
                 <div className="history-card">
                   <div className="history-item">
                     <div className="history-item__left">
-                      <div className="history-tag font-[family-name:var(--font-mono)]">
+                      <div className="history-tag">
                         <span className="history-dot history-dot--yellow" />
                         DESIGN
                       </div>
@@ -472,13 +466,13 @@ export function BudgetSnapshotWidget() {
                         Created additional prototypes for stakeholder review.
                       </p>
                     </div>
-                    <span className="history-item__amount history-item__amount--plus font-[family-name:var(--font-heading)]">
+                    <span className="history-item__amount history-item__amount--plus">
                       + $900
                     </span>
                   </div>
                   <div className="history-item">
                     <div className="history-item__left">
-                      <div className="history-tag font-[family-name:var(--font-mono)]">
+                      <div className="history-tag">
                         <span className="history-dot history-dot--blue" />
                         DEVELOPMENT
                       </div>
@@ -486,7 +480,7 @@ export function BudgetSnapshotWidget() {
                         Refactored data services to simplify maintenance.
                       </p>
                     </div>
-                    <span className="history-item__amount history-item__amount--minus font-[family-name:var(--font-heading)]">
+                    <span className="history-item__amount history-item__amount--minus">
                       - $200
                     </span>
                   </div>
@@ -494,14 +488,14 @@ export function BudgetSnapshotWidget() {
               </section>
 
               <section className="history-group" data-month="February">
-                <div className="history-group__meta font-[family-name:var(--font-mono)]">
+                <div className="history-group__meta">
                   <span>[ FEB 3RD ]</span>
                   <span className="history-group__sum">+ $350</span>
                 </div>
                 <div className="history-card">
                   <div className="history-item">
                     <div className="history-item__left">
-                      <div className="history-tag font-[family-name:var(--font-mono)]">
+                      <div className="history-tag">
                         <span className="history-dot history-dot--green" />
                         TESTING
                       </div>
@@ -509,13 +503,13 @@ export function BudgetSnapshotWidget() {
                         Added accessibility checks to the pre-release checklist.
                       </p>
                     </div>
-                    <span className="history-item__amount history-item__amount--plus font-[family-name:var(--font-heading)]">
+                    <span className="history-item__amount history-item__amount--plus">
                       + $500
                     </span>
                   </div>
                   <div className="history-item">
                     <div className="history-item__left">
-                      <div className="history-tag font-[family-name:var(--font-mono)]">
+                      <div className="history-tag">
                         <span className="history-dot history-dot--yellow" />
                         DESIGN
                       </div>
@@ -523,7 +517,7 @@ export function BudgetSnapshotWidget() {
                         Standardized spacing tokens across the component set.
                       </p>
                     </div>
-                    <span className="history-item__amount history-item__amount--minus font-[family-name:var(--font-heading)]">
+                    <span className="history-item__amount history-item__amount--minus">
                       - $150
                     </span>
                   </div>
