@@ -1,17 +1,21 @@
 "use client";
 // Desktop sidebar navigation with active-link highlighting.
 
+import type { NavLink } from "@/src/components/sidebar-links";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const sidebarLinks = [
-  { label: "DASHBOARD VIEW", href: "/" },
-  { label: "UPDATES", href: "/updates" },
-  { label: "DOCUMENTS", href: "/documents" },
-  { label: "CONTACT INFO", href: "/contact-info" },
-];
+function linkIsActive(pathname: string, href: string): boolean {
+  if (href === "/") {
+    return pathname === "/";
+  }
+  if (href === "/admin") {
+    return pathname === "/admin" || pathname.startsWith("/admin/");
+  }
+  return pathname === href;
+}
 
-export function Sidebar() {
+export function Sidebar({ links }: { links: NavLink[] }) {
   const pathname = usePathname();
 
   return (
@@ -22,13 +26,14 @@ export function Sidebar() {
         </p>
 
         <nav className="mt-16 space-y-7">
-          {sidebarLinks.map((link) => {
-            const isActive = pathname === link.href;
+          {links.map((link) => {
+            const isActive = linkIsActive(pathname, link.href);
 
             return (
               <Link
-                key={link.label}
+                key={`${link.href}-${link.label}`}
                 href={link.href}
+                prefetch={false}
                 className={`block w-full whitespace-nowrap rounded-lg border px-4 py-3 text-center text-[11px] tracking-[0.12em] font-mono uppercase transition-[background-color,color,border-color] duration-300 ease-out ${
                   isActive
                     ? "border-yellow bg-yellow text-black hover:bg-yellow hover:text-black"

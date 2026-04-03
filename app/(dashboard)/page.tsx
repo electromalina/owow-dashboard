@@ -1,5 +1,4 @@
 import { CardPlaceholder } from "@/src/components/ui/CardPlaceholder";
-// Home page content area composed of placeholder cards for noww.
 
 export default function Home() {
   return (
