@@ -26,6 +26,13 @@ interface WidgetProps {
 }
 
 export function ProjectStatus({ activePhaseId, setActivePhaseId }: WidgetProps) {
+  const inProgressIndex = PROJECT_PHASES.findIndex((p) => p.status === 'In Progress');
+  const lastActiveIndex = inProgressIndex !== -1 ? inProgressIndex : PROJECT_PHASES.findIndex((p) => p.status !== 'Completed') - 1;
+  // Progress bar spans from the first dot to the current dot.
+  // The track runs left-10 to right-10, so dots are spaced at (100% / (n-1)) intervals of the track.
+  // We express progress as a percentage of the track width, then add the left-10 offset.
+  const trackPercent = lastActiveIndex / (PROJECT_PHASES.length - 1); // 0..1 of track
+
   return (
     <div className="bg-off-black border border-white/10 rounded-2xl p-8 shadow-xl">
       <h2 className="text-off-white text-lg font-bold mb-10">Project Status</h2>
@@ -34,10 +41,10 @@ export function ProjectStatus({ activePhaseId, setActivePhaseId }: WidgetProps) 
         {/* Background Track */}
         <div className="absolute top-4 left-10 right-10 h-[2px] bg-white/10 z-0" />
 
-        {/* GREEN PROGRESS BAR */}
+        {/* GREEN PROGRESS BAR — ends at the center of the In Progress dot */}
         <div
           className="absolute top-4 left-10 h-[2px] bg-green z-0 transition-all duration-1000 ease-out"
-          style={{ width: '50%' }}
+          style={{ width: `calc(${trackPercent} * (100% - 5rem))` }}
         />
 
         {PROJECT_PHASES.map((phase) => {
