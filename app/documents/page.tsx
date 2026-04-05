@@ -13,10 +13,7 @@ const PREVIEW_COUNT = 2;
 
 export default function DocumentsPage() {
   // track which categories are expanded (showing all docs)
-  const [expandedCategories, setExpandedCategories] = useState<string[]>(
-    documentCategories.map((cat) => cat.id)
-  );
-
+  const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
   // toggle a category open or closed
   function toggleCategory(categoryId: string) {
     setExpandedCategories((prev) =>
@@ -120,24 +117,24 @@ export default function DocumentsPage() {
                 </span>
               </button>
 
-              {/* Document rows: only visible when expanded */}
-              {isExpanded && (
+              {/* Document rows: always show first 2, rest only when expanded */}
+
                 <div className="px-6 pb-4">
                   {visibleDocs.map((doc) => (
                     <DocumentRow key={doc.id} doc={doc} />
                   ))}
 
-                  {/* "+X more" link if there are hidden documents */}
+                  {/* "+X more" link if there are hidden documents and shows only when collapsed */}
                   {!isExpanded && hiddenCount > 0 && (
                     <button
                       onClick={() => toggleCategory(cat.id)}
                       className="mt-3 text-sm text-blue hover:underline"
                     >
-                      +{hiddenCount} more - View all {cat.label} →
+                      +{hiddenCount} more in {cat.label} →
                     </button>
                   )}
                 </div>
-              )}
+              
             </section>
           );
         })}
