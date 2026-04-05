@@ -1,5 +1,6 @@
 import { CardPlaceholder } from "@/src/components/ui/CardPlaceholder";
 // Home page content area composed of placeholder cards for noww.
+import KeyDocuments from "@/src/components/widgets/KeyDocuments";
 
 export default function Home() {
   return (
@@ -12,7 +13,7 @@ export default function Home() {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(280px,1fr)]">
-        <CardPlaceholder className="min-h-72" />
+        <KeyDocuments/>
         <CardPlaceholder className="min-h-72" />
         <CardPlaceholder className="min-h-72" />
       </div>
