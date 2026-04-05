@@ -10,6 +10,11 @@ export interface Document {
   date: string;
   status: DocumentStatus;
   sourceUrl?: string; //optional - only for links
+  // optional - detail page fields
+  author?: string;
+  category?: string; // which category this doc belongs to
+  sourceLinks?: { label: string; url: string }[];
+  versions?: { version: string; date: string; isCurrent?: boolean }[];
 }
 
 export interface DocumentCategory {
@@ -69,6 +74,19 @@ export const documentCategories: DocumentCategory[] = [
         size: "1.2 MB",
         date: "Feb 25, 2026",
         status: "review",
+        author: "Sarah Chen",
+        category: "PRD",
+        sourceLinks: [
+          { label: "Notion Document", url: "https://notion.so" },
+          { label: "Figma Spec File", url: "https://figma.com" },
+        ],
+        versions: [
+          { version: "v3.0", date: "Feb 25, 2026", isCurrent: true },
+          { version: "v2.1", date: "Feb 10, 2026" },
+          { version: "v2.0", date: "Jan 28, 2026" },
+          { version: "v1.0", date: "Jan 15, 2026" },
+        ],
+
       },
       {
         id: "prd-2",
@@ -308,4 +326,13 @@ export function getTotalDocuments(): number {
 
 export function getTotalCategories(): number {
   return documentCategories.length;
+}
+
+// find a single document by its id (for detail page)
+export function getDocumentById(id: string): Document | undefined {
+  for (const cat of documentCategories) {
+    const doc = cat.documents.find((d) => d.id === id);
+    if (doc) return doc;
+  }
+  return undefined;
 }
