@@ -76,7 +76,7 @@ export function ProjectStatus({ activePhaseId, setActivePhaseId }: WidgetProps) 
                 <p className={`text-base font-bold transition-colors ${isActiveView ? 'text-off-white' : 'text-white/40'}`}>
                   {phase.title}
                 </p>
-                <p className="text-[10px] uppercase tracking-tighter text-white/30 mt-0.5">
+                <p className={`text-[10px] uppercase tracking-tighter mt-0.5 transition-colors ${isInProgress ? 'text-green font-bold' : 'text-white/30'}`}>
                   {phase.status}
                 </p>
               </div>
@@ -90,18 +90,35 @@ export function ProjectStatus({ activePhaseId, setActivePhaseId }: WidgetProps) 
 
 export function PhaseInfo({ activePhaseId, setActivePhaseId }: WidgetProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isFading, setIsFading] = useState(false);
   const activePhase = PROJECT_PHASES.find((p) => p.id === activePhaseId) || PROJECT_PHASES[2];
+
+  const handlePhaseSelect = (id: string) => {
+    setIsDropdownOpen(false);
+    if (id === activePhaseId) return;
+    setIsFading(true);
+    setTimeout(() => {
+      setActivePhaseId(id);
+      setIsFading(false);
+    }, 180);
+  };
+
+  const statusColorMap: Record<ProjectStatus, string> = {
+    'Completed': 'text-green',
+    'In Progress': 'text-blue',
+    'Pending': 'text-white/40',
+  };
 
   return (
     <div className="bg-off-black border border-white/10 rounded-2xl p-8 shadow-xl">
       <div className="relative mb-6">
         <button
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className="flex flex-col items-start group"
+          className="flex flex-col items-start group cursor-pointer hover:opacity-80 transition-opacity"
         >
           <div className="flex items-center gap-2">
             <svg
-              className={`w-6 h-6 text-blue transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`}
+              className={`w-6 h-6 text-blue transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}
               viewBox="0 0 24 24"
               aria-hidden="true"
             >
@@ -109,7 +126,9 @@ export function PhaseInfo({ activePhaseId, setActivePhaseId }: WidgetProps) {
             </svg>
             <h2 className="text-3xl font-bold text-off-white tracking-tight">{activePhase.title}</h2>
           </div>
-          <span className="text-xs text-blue font-bold ml-8 uppercase tracking-[0.2em]">{activePhase.status}</span>
+          <span className={`text-xs font-bold ml-8 uppercase tracking-[0.2em] ${statusColorMap[activePhase.status]}`}>
+            {activePhase.status}
+          </span>
         </button>
 
         {isDropdownOpen && (
@@ -117,11 +136,12 @@ export function PhaseInfo({ activePhaseId, setActivePhaseId }: WidgetProps) {
             {PROJECT_PHASES.map((p) => (
               <button
                 key={p.id}
-                className="w-full text-left px-5 py-3 text-sm text-white/60 hover:bg-blue hover:text-white transition-colors"
-                onClick={() => {
-                  setActivePhaseId(p.id);
-                  setIsDropdownOpen(false);
-                }}
+                className={`w-full text-left px-5 py-3 text-sm transition-all duration-150 cursor-pointer
+                  ${p.id === activePhaseId
+                    ? 'text-white bg-white/10'
+                    : 'text-white/60 hover:bg-blue/80 hover:text-white hover:pl-6'
+                  }`}
+                onClick={() => handlePhaseSelect(p.id)}
               >
                 {p.title}
               </button>
@@ -132,7 +152,10 @@ export function PhaseInfo({ activePhaseId, setActivePhaseId }: WidgetProps) {
 
       <div className="h-[1px] bg-white/5 w-full mb-8" />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div
+        className="grid grid-cols-1 md:grid-cols-2 gap-12 transition-all duration-200"
+        style={{ opacity: isFading ? 0 : 1, transform: isFading ? 'translateY(4px)' : 'translateY(0)' }}
+      >
         <div>
           <h4 className="text-[11px] font-bold text-white/30 uppercase tracking-[0.2em] mb-4">Goal</h4>
           <p className="text-off-white leading-relaxed text-lg">{activePhase.goal}</p>
@@ -143,7 +166,7 @@ export function PhaseInfo({ activePhaseId, setActivePhaseId }: WidgetProps) {
           <ul className="space-y-3">
             {activePhase.deliverables.map((item, i) => (
               <li key={i} className="flex items-center gap-3 text-white/70 text-sm font-mono">
-                <div className="w-1.5 h-1.5 bg-blue rounded-full shadow-[0_0_8px_rgba(0,112,243,0.4)]" />
+                <div className="w-1.5 h-1.5 bg-yellow-400 rounded-full shadow-[0_0_8px_rgba(250,204,21,0.5)]" />
                 {item}
               </li>
             ))}
