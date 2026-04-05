@@ -13,7 +13,7 @@ export function Header() {
 
   return (
     <>
-      <div className="flex items-center justify-between  pl-14 pb-6 lg:pb-8 lg:pt-3">
+      <div className="flex items-center justify-between pb-6 lg:pb-8 lg:pt-3">
         <Image src="/owow.svg" alt="OWOW" width={123} height={28} priority />
 
         <div className="flex items-center gap-3">
