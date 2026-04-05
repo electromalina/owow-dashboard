@@ -5,10 +5,10 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  font-family: PP Neue Montreal;  
+  font-family: 'PP Neue Montreal';  
 }
 .container h1 {
-    font-size: 3rem;
+    font-size: 3.5rem;
 }
 
 .input {
@@ -17,14 +17,16 @@
   border: 1px solid #FFB708;
   border-radius: 7px;
   background: #171717;
-  width: 215px;
+  width: 300px;
   height: 41px;
 }
 .button {
   margin-top: 10px;
-  padding: 3px;
+  padding: 8px 12px;
   border-radius: 5px;
   background: #FFF;
   color: black;
-  font-family: PP Neue Montreal;
+  font-family: 'PP Neue Montreal Mono Book';
+  height: 40px;
+  text-align: center;
 }

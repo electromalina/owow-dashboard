@@ -6,7 +6,7 @@ export default function LoginPage() {
       <h1>[LOGIN]</h1>
       <input className={styles.input} placeholder="Email" />
       <input className={styles.input} placeholder="Password" type="password" />
-      <button className={styles.button}>Login</button>
+      <button className={styles.button}>LOGIN</button>
     </div>
   );
 }
