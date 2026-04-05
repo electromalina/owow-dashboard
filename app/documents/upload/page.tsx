@@ -4,8 +4,8 @@ import { useState } from "react";
 import { documentCategories } from "@/src/data/documents";
 import StatusBadge from "@/src/components/ui/StatusBadge";
 
-// simulated recent uploads for the sidebar
-const recentUploads = [
+// simulated recent uploads for the sidebar (inital starting data)
+const initialUploads = [
   { id: "r1", name: "User Flow Diagrams v1.5", category: "PRD", size: "4.5 MB", date: "Mar 10, 2026", status: "draft" as const },
   { id: "r2", name: "API Documentation", category: "PRD", size: "890 KB", date: "Mar 8, 2026", status: "approved" as const },
   { id: "r3", name: "Weekly Progress Report #8", category: "Reports", size: "2.1 MB", date: "Mar 8, 2026", status: "approved" as const },
@@ -14,6 +14,9 @@ const recentUploads = [
 ];
 
 export default function UploadPage() {
+
+  const [uploads, setUploads] = useState<{ id: string; name: string; category: string; size: string | undefined; date: string; status: "draft" | "approved" }[]>(initialUploads);
+    
   // track which upload mode is active: file upload or paste link
   const [mode, setMode] = useState<"file" | "link">("file");
 
@@ -26,12 +29,31 @@ export default function UploadPage() {
   const [toast, setToast] = useState<{
     type: "success" | "error";
     message: string;
+    undoId?: string;
   } | null>(null);
 
   // simulates uploading a document
   function handleUpload() {
     if (!docName) return; // don't submit if name is empty
-    setToast({ type: "success", message: `"${docName}" added successfully.` });
+
+    // create a new upload entry
+    const newUpload = {
+      id: `r${Date.now()}`, // unique id using timestamp
+      name: docName,
+      category: category
+        ? documentCategories.find((c) => c.id === category)?.label || "General"
+        : "General",
+      size: mode === "file" ? "—" : undefined, // files have size, links not
+      date: "Mar 16, 2026", // hardcoded for prototype
+      status: "draft" as const, // new uploads always start as draft
+    };
+
+    setUploads((prev) => [newUpload, ...prev]);
+    setToast({ type: "success", message: `"${docName}" added successfully.`,undoId: newUpload.id, 
+        // track which upload to undo
+ });
+
+ //clear the form
     setDocName("");
     setCategory("");
     setLinkUrl("");
@@ -44,6 +66,37 @@ export default function UploadPage() {
     setDocName("");
     setCategory("");
     setLinkUrl("");
+  }
+
+  // Removes an upload by id — used by both Undo and Delete
+  function removeUpload(id: string) {
+    setUploads((prev) => prev.filter((item) => item.id !== id));
+  }
+
+  // Undo the last upload — removes it from the list
+  function handleUndo() {
+    if (toast?.undoId) {
+      removeUpload(toast.undoId);
+      setToast(null);
+    }
+  }
+
+  // Delete with confirmation — shows a red warning toast
+  function handleDelete(id: string, name: string) {
+    setToast({
+      type: "error",
+      message: `Delete "${name}"? This cannot be undone.`,
+      undoId: id, // reusing undoId to track which item to delete
+    });
+  }
+
+  // Confirm deletion — actually removes the item
+  function confirmDelete() {
+    if (toast?.undoId) {
+      removeUpload(toast.undoId);
+      setToast({ type: "success", message: "Document deleted.", undoId: undefined });
+      setTimeout(() => setToast(null), 3000);
+    }
   }
 
   return (
@@ -185,17 +238,17 @@ export default function UploadPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <h2 className="font-heading text-base font-medium text-white">Recent uploads</h2>
-              <span className="rounded-md bg-off-white/10 px-2 py-0.5 text-xs text-off-white">{recentUploads.length}</span>
+              <span className="rounded-md bg-off-white/10 px-2 py-0.5 text-xs text-off-white">{uploads.length}</span>
             </div>
             <a href="/documents" className="text-sm text-blue hover:underline">View all →</a>
           </div>
 
           {/* Recent upload items */}
           <div className="mt-4 space-y-2">
-            {recentUploads.map((item) => (
+            {uploads.map((item) => (
               <div
                 key={item.id}
-                className="flex items-center justify-between rounded-xl border border-off-white/10 px-4 py-3"
+                className="group flex items-center justify-between rounded-xl border border-off-white/10 px-4 py-3"
               >
                 <div className="flex items-center gap-3">
                   {/* Doc or link icon based on whether item has a size */}
@@ -221,29 +274,74 @@ export default function UploadPage() {
                     </p>
                   </div>
                 </div>
-                <StatusBadge status={item.status} />
+                <div className="flex items-center gap-2">
+                  <StatusBadge status={item.status} />
+                  {/* delete button, hidden by default, shows on hover */}
+                  <button
+                    onClick={() => handleDelete(item.id, item.name)}
+                    className="ml-1 hidden rounded-full p-1 text-off-white transition-colors hover:bg-pink/10 hover:text-pink group-hover:block"
+                  >
+                    ✕
+                  </button>
+                </div>
               </div>
             ))}
-          </div>
+          </div> 
+          {/*//yoyoyoyoy*/}
 
           {/* Total count */}
-          <p className="mt-4 font-mono text-xs text-off-white">Showing {recentUploads.length} of 28 total</p>
+          <p className="mt-4 font-mono text-xs text-off-white">Showing {uploads.length} of {uploads.length + 23} total</p>
         </div>
       </div>
 
       {/* TOAST NOTIFICATION */}
       {toast && (
-        <div className="fixed bottom-6 right-6 flex items-center gap-3 rounded-xl border border-green/30 bg-off-black px-5 py-3 shadow-lg">
-          {/* Green checkmark circle */}
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green/20">
-            <span className="text-green">✓</span>
+        <div
+          className={`fixed bottom-6 right-6 flex items-center gap-3 rounded-xl border px-5 py-3 shadow-lg ${
+            toast.type === "success"
+              ? "border-green/30 bg-off-black"
+              : "border-pink/30 bg-off-black"
+          }`}
+        >
+          {/* icon changes based on toast type */}
+          <div
+            className={`flex h-8 w-8 items-center justify-center rounded-full ${
+              toast.type === "success" ? "bg-green/20" : "bg-pink/20"
+            }`}
+          >
+            <span className={toast.type === "success" ? "text-green" : "text-pink"}>
+              {toast.type === "success" ? "✓" : "✕"}
+            </span>
           </div>
           <p className="text-sm text-white">{toast.message}</p>
-          {/* Undo + close buttons */}
-          <button className="ml-4 text-sm text-blue hover:underline">Undo</button>
+
+          {/* action buttons: undo for success, cancel/delete for error */}
+          {toast.type === "success" && toast.undoId && (
+            <button onClick={handleUndo} className="ml-4 text-sm text-blue hover:underline">
+              Undo
+            </button>
+          )}
+          {toast.type === "error" && (
+            <div className="ml-4 flex gap-2">
+              <button
+                onClick={() => setToast(null)}
+                className="rounded-full border border-off-white/30 px-3 py-1 text-sm text-white hover:bg-off-white/5"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="rounded-full bg-pink px-3 py-1 text-sm text-white hover:bg-pink/90"
+              >
+                Delete
+              </button>
+            </div>
+          )}
           <button
             onClick={() => setToast(null)}
-            className="text-off-white hover:text-white">✕
+            className="text-off-white hover:text-white"
+          >
+            ✕
           </button>
         </div>
       )}

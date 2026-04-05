@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
   documentCategories,
   getTotalDocuments,
@@ -62,9 +63,12 @@ export default function DocumentsPage() {
           </div>
 
           {/* Upload button: yellow CTA matching OWOW brand */}
-          <button className="flex items-center gap-2 rounded-full bg-yellow px-5 py-2 text-sm font-medium text-black transition-colors hover:bg-yellow/90">
+          <Link
+            href="/documents/upload"
+            className="flex items-center gap-2 rounded-full bg-yellow px-5 py-2 text-sm font-medium text-black transition-colors hover:bg-yellow/90"
+          >
             + Upload
-          </button>
+          </Link>
         </div>
       </div>
 
