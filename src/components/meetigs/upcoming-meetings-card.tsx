@@ -105,16 +105,16 @@ function downloadCalendarInvite(meeting: Meeting) {
 
 export function UpcomingMeetingsCard() {
   return (
-    <div className="flex h-full min-h-[224px] w-full flex-col">
+    <div className="flex w-full flex-col">
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <h3 className="text-sm font-medium tracking-wide text-white">
+          <h3 className="text-[20px] font-medium tracking-wide text-white">
             Upcoming Meetings
           </h3>
         </div>
       </div>
 
-      <div className="flex-1 space-y-3 overflow-y-auto">
+      <div className="mt-2 space-y-3">
         {meetings.map((meeting) => (
           <div
             key={meeting.id}
@@ -129,11 +129,11 @@ export function UpcomingMeetingsCard() {
             )}
 
             <div className="flex items-center gap-4">
-              <div className="min-w-[60px] rounded-lg bg-[#252525] px-3 py-2">
-                <div className="text-center text-lg font-semibold text-white">
+              <div className="min-w-[54px] rounded-lg bg-[#252525] px-2.5 py-1.5">
+                <div className="text-center text-lg font-semibold text-white font-mono">
                   {meeting.date.split(" ")[1]}
                 </div>
-                <div className="text-center text-[10px] tracking-wide text-[#888]">
+                <div className="text-center text-[10px] tracking-wide text-[#888] font-mono">
                   {meeting.date.split(" ")[0]}
                 </div>
               </div>
@@ -144,21 +144,21 @@ export function UpcomingMeetingsCard() {
                     {meeting.title}
                   </h4>
                   {meeting.isNext && (
-                    <span className="shrink-0 rounded bg-[#c9a227]/20 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-[#c9a227]">
+                    <span className="shrink-0 rounded bg-[#c9a227]/20 px-1.5 py-0.5 text-[8px] font-medium font-mono uppercase tracking-wider text-[#c9a227]">
                       Next
                     </span>
                   )}
                 </div>
 
-                <div className="mt-1 flex items-center gap-3 text-xs text-[#888]">
-                  <span className="flex items-center gap-1">
+                <div className="mt-1 flex flex-nowrap items-center gap-2 text-[10px] text-[#888] font-mono">
+                  <span className="flex items-center gap-1 whitespace-nowrap font-mono">
                     <Clock className="h-3 w-3" />
                     {meeting.time}
                   </span>
                   <span className="text-[#555]">•</span>
-                  <span>{meeting.duration}</span>
+                  <span className="whitespace-nowrap font-mono">{meeting.duration}</span>
                   <span className="text-[#555]">•</span>
-                  <span className="flex items-center gap-1">
+                  <span className="flex items-center gap-1 whitespace-nowrap font-mono">
                     {meeting.type === "video" ? (
                       <Video className="h-3 w-3" />
                     ) : (
@@ -172,9 +172,9 @@ export function UpcomingMeetingsCard() {
               {meeting.isNext && (
                 <button
                   onClick={() => downloadCalendarInvite(meeting)}
-                  className="shrink-0 rounded-md bg-[#c9a227] px-3 py-1.5 text-xs font-medium text-black transition-colors hover:bg-[#d4ad2d]"
+                  className="shrink-0 rounded-md border border-[#434343] bg-[#262626] px-3 py-1.5 text-[8px] font-normal font-mono tracking-[0.06em] text-[#fbfbfb] transition-colors hover:border-[#ffffff] hover:bg-[#ffffff] hover:text-[#111111]"
                 >
-                  Add to calendar
+                  ADD TO CALENDAR
                 </button>
               )}
             </div>
