@@ -2,130 +2,81 @@
 
 import Link from "next/link";
 
-const items = [
-  {
-    id: "1",
-    tags: ["RESEARCH"],
-    time: "3h Ago",
-    title: "Editing homepage",
-    desc: "Add acceptance criteria.",
-    inProgress: false,
-  },
-  {
-    id: "2",
-    tags: ["STRATEGY", "TECH", "SOFTWARE"],
-    time: "9h Ago",
-    title: "Review Required",
-    desc: "Content for the Page needs approval.",
-    inProgress: false,
-  },
-  {
-    id: "3",
-    tags: ["BUDGET", "TECH"],
-    time: "1d Ago",
-    title: "Payment Processed",
-    desc: "Payment of 600 EUR has been received.",
-    inProgress: true,
-  },
-];
-
 export default function UpdatesWidget() {
   return (
-    <section className="widget" aria-labelledby="updates-widget-title">
-      <header className="header">
-        <h2 id="updates-widget-title" className="title">
-          Updates
-        </h2>
-        <Link href="/updates" className="viewAll">
-          VIEW ALL
-        </Link>
-      </header>
-
-      <div className="timelineStack">
-        <div className="timelineProgress" aria-hidden="true">
-          <div className="timelineProgressTrack">
-            <div className="progressHead" />
-            <div className="progressBetween" />
-            <div className="progressCompleted" />
-          </div>
-          <span className="progressCursor" />
-        </div>
-
-        <ul className="list">
-          {items.map((item) => (
-            <li key={item.id} className="item">
-              <div className="itemTop">
-                <div className="chips">
-                  {item.tags.map((tag) => (
-                    <span key={tag} className="chip">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <span className="time">{item.time}</span>
-              </div>
-              <p className="itemTitle">{item.title}</p>
-              <p className="itemDesc">{item.desc}</p>
-              <div
-                className={`dot ${item.inProgress ? "dotInProgress" : ""}`}
-                aria-hidden="true"
-              />
-            </li>
-          ))}
-        </ul>
-      </div>
-
+    <>
       <style jsx>{`
+        .root {
+          --widget-bg: #1b1b1b;
+          --card-bg: #262626;
+          --chip-bg: #1b1b1b;
+          --text-muted: #8b8b8b;
+          --text-time: #777777;
+          --chip-text: #d0d2cc;
+          --line-grey: #737373;
+          --line-amber: #f5be0b;
+          --rail-head-height: 24px;
+          --rail-between-height: 0px;
+          width: 100%;
+          height: 100%;
+        }
+
         .widget {
           width: 100%;
-          min-height: 488px;
-          padding: 32px 46px;
-          border: 1px solid #303030;
-          border-radius: 8px;
-          background: #1b1b1b;
+          height: 100%;
+          min-height: 390px;
+          padding: 8px 10px 8px 10px;
           position: relative;
-          color: #fff;
+          font-family: var(--font-body), system-ui, sans-serif;
+          color: #ffffff;
         }
 
         .header {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 20px;
+          margin-bottom: 24px;
+          position: relative;
+          z-index: 1;
         }
 
         .title {
           margin: 0;
           font-size: 20px;
           font-weight: 500;
+          line-height: 1;
+          font-family: var(--font-body), system-ui, sans-serif;
         }
 
-        .viewAll {
-          border: none;
-          border-radius: 4px;
-          background: #262626;
+        .view-all {
+          border: 1px solid #434343;
+          border-radius: 6px;
+          background: var(--card-bg);
           color: #fbfbfb;
           font-family: var(--font-mono), monospace;
           font-size: 10px;
-          letter-spacing: 0.04em;
+          font-weight: 400;
+          letter-spacing: 0.08em;
           text-transform: uppercase;
           line-height: 1;
-          height: 24px;
-          padding: 0 10px;
+          height: 28px;
+          min-width: 80px;
+          padding: 0 8px;
           cursor: pointer;
           transition: background-color 0.2s ease, color 0.2s ease;
         }
 
-        .viewAll:hover {
-          background: #fff;
+        .view-all:hover {
+          background: #ffffff;
           color: #0c0c0c;
         }
 
-        .timelineStack {
+        .timeline-stack {
           position: relative;
+          z-index: 0;
         }
 
-        .timelineProgress {
+        .timeline-progress {
           position: absolute;
           top: 0;
           bottom: 0;
@@ -133,9 +84,10 @@ export default function UpdatesWidget() {
           width: 2px;
           overflow: visible;
           pointer-events: none;
+          z-index: 0;
         }
 
-        .timelineProgressTrack {
+        .timeline-progress__track {
           width: 100%;
           height: 100%;
           display: flex;
@@ -144,37 +96,41 @@ export default function UpdatesWidget() {
           overflow: hidden;
         }
 
-        .progressHead {
-          flex: 0 0 32px;
+        .timeline-progress__segment--head {
+          flex: 0 0 var(--rail-head-height);
+          min-height: var(--rail-head-height);
           background: transparent;
         }
 
-        .progressBetween {
-          flex: 0 0 0;
-          background: #737373;
+        .timeline-progress__segment--between {
+          flex: 0 0 var(--rail-between-height);
+          min-height: var(--rail-between-height);
+          background: var(--line-grey);
         }
 
-        .progressCompleted {
+        .timeline-progress__segment--completed {
           flex: 1 1 0;
-          background: #f5be0b;
+          min-height: 12px;
+          background: var(--line-amber);
         }
 
-        .progressCursor {
+        .timeline-progress__cursor {
           --cursor-size: 10px;
           position: absolute;
           left: calc(50% - var(--cursor-size) / 2);
-          top: calc(32px - var(--cursor-size) / 2);
+          top: calc(var(--rail-head-height) + var(--rail-between-height) - var(--cursor-size) / 2);
           width: var(--cursor-size);
           height: var(--cursor-size);
           border-radius: 50%;
-          background: #f5be0b;
-          box-shadow: 0 0 0 0 rgba(245, 190, 11, 0.55),
-            0 0 12px rgba(245, 190, 11, 0.35);
-          animation: cursorEnter 0.72s cubic-bezier(0.34, 1.45, 0.64, 1) both,
-            cursorPulse 2.25s ease-in-out 0.72s infinite;
+          background: var(--line-amber);
+          box-shadow: 0 0 0 0 rgba(245, 190, 11, 0.55), 0 0 12px rgba(245, 190, 11, 0.35);
+          z-index: 2;
+          transform-origin: center center;
+          animation: timeline-cursor-enter 0.72s cubic-bezier(0.34, 1.45, 0.64, 1) both,
+            timeline-cursor-pulse 2.25s ease-in-out 0.72s infinite;
         }
 
-        @keyframes cursorEnter {
+        @keyframes timeline-cursor-enter {
           from {
             opacity: 0;
             transform: scale(0.2);
@@ -187,19 +143,26 @@ export default function UpdatesWidget() {
           }
         }
 
-        @keyframes cursorPulse {
+        @keyframes timeline-cursor-pulse {
           0%,
           100% {
-            box-shadow: 0 0 0 0 rgba(245, 190, 11, 0.55),
-              0 0 10px rgba(245, 190, 11, 0.35);
+            box-shadow: 0 0 0 0 rgba(245, 190, 11, 0.55), 0 0 10px rgba(245, 190, 11, 0.35);
           }
           50% {
-            box-shadow: 0 0 0 10px rgba(245, 190, 11, 0),
-              0 0 18px rgba(245, 190, 11, 0.5);
+            box-shadow: 0 0 0 10px rgba(245, 190, 11, 0), 0 0 18px rgba(245, 190, 11, 0.5);
           }
         }
 
-        .list {
+        @media (prefers-reduced-motion: reduce) {
+          .timeline-progress__cursor {
+            animation: none;
+            opacity: 1;
+            transform: none;
+            filter: none;
+          }
+        }
+
+        .timeline-list {
           list-style: none;
           margin: 0;
           padding: 0 18px 0 0;
@@ -209,11 +172,12 @@ export default function UpdatesWidget() {
 
         .item {
           position: relative;
+          width: 100%;
           min-height: 74px;
-          background: #262626;
+          background: var(--card-bg);
           border-radius: 8px;
-          padding: 10px 12px 12px;
-          margin-bottom: 14px;
+          padding: 12px 12px 13px;
+          margin-bottom: 16px;
           transition: background-color 0.65s cubic-bezier(0.33, 1, 0.68, 1);
         }
 
@@ -221,15 +185,22 @@ export default function UpdatesWidget() {
           transition: opacity 0.65s cubic-bezier(0.33, 1, 0.68, 1);
         }
 
-        .timelineStack:has(.item:hover) .item:not(:hover) {
-          background: #1b1b1b;
+        .timeline-stack:has(.item:hover) .item:not(:hover) {
+          background: var(--widget-bg);
         }
 
-        .timelineStack:has(.item:hover) .item:not(:hover) > :not(.dot) {
+        .timeline-stack:has(.item:hover) .item:not(:hover) > :not(.dot) {
           opacity: 0.42;
         }
 
-        .itemTop {
+        @media (prefers-reduced-motion: reduce) {
+          .item,
+          .item > :not(.dot) {
+            transition-duration: 0.01ms;
+          }
+        }
+
+        .item__top {
           display: flex;
           justify-content: space-between;
           align-items: flex-start;
@@ -241,79 +212,147 @@ export default function UpdatesWidget() {
           display: flex;
           gap: 4px;
           flex-wrap: wrap;
+          max-width: 210px;
         }
 
         .chip {
-          background: #1b1b1b;
-          color: #d0d2cc;
+          background: var(--chip-bg);
+          color: var(--chip-text);
           border-radius: 2px;
           font-family: var(--font-mono), monospace;
-          font-size: 9px;
+          font-size: 7px;
+          font-weight: 400;
           text-transform: uppercase;
           line-height: 1;
+          min-height: 11px;
           padding: 3px 5px;
+          display: inline-flex;
+          align-items: center;
         }
 
         .time {
-          color: #777;
+          color: var(--text-time);
           font-family: var(--font-mono), monospace;
-          font-size: 10px;
+          font-size: 8px;
+          font-weight: 400;
+          line-height: 1;
+          margin-top: 1px;
           white-space: nowrap;
         }
 
-        .itemTitle {
+        .item__title {
           margin: 0;
-          font-size: 20px;
+          font-size: 14px;
           font-weight: 500;
-          line-height: 1.1;
+          line-height: 1.2;
+          font-family: var(--font-heading), system-ui, sans-serif;
         }
 
-        .itemDesc {
+        .item__desc {
           margin: 7px 0 0;
-          color: #8b8b8b;
-          font-size: 10px;
+          color: var(--text-muted);
+          font-size: 12px;
+          font-weight: 400;
+          line-height: 1.3;
+          font-family: var(--font-body), system-ui, sans-serif;
         }
 
         .dot {
           position: absolute;
-          right: -22px;
+          right: -21px;
           top: 50%;
-          width: 10px;
-          height: 10px;
+          width: 9.5px;
+          height: 9.5px;
           border-radius: 50%;
           transform: translateY(-50%);
-          border: 2px solid #f5be0b;
-          background: #1b1b1b;
-          transition: transform 0.18s ease, background-color 0.18s ease,
-            border-color 0.18s ease;
+          border: 1.5px solid var(--line-amber);
+          background: var(--widget-bg);
+          z-index: 2;
+          transition: transform 0.18s ease, background-color 0.18s ease, border-color 0.18s ease;
         }
 
-        .dotInProgress {
-          border-color: #8b8b8b;
-        }
-
-        .item:hover .dot:not(.dotInProgress) {
-          transform: translateY(-50%) scale(1.12);
-          background: #f5be0b;
-          border-color: #f5be0b;
-        }
-
-        .item:hover .dotInProgress {
-          transform: translateY(-50%) scale(1.1);
-          border-color: #b5b5b5;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .progressCursor {
-            animation: none;
-          }
-
-          .item,
-          .item > :not(.dot) {
-            transition-duration: 0.01ms;
-          }
+        .item:hover .dot {
+          transform: translateY(-50%) scale(1.18);
+          background: var(--line-amber);
+          border-color: var(--line-amber);
         }
       `}</style>
-    </section>
+
+      <section className="root">
+        <section className="widget" aria-labelledby="updates-title">
+        <header className="header">
+          <h1 id="updates-title" className="title">
+            Updates
+          </h1>
+          <Link href="/updates" className="view-all">
+            VIEW ALL
+          </Link>
+        </header>
+
+        <div className="timeline-stack">
+          <div className="timeline-progress" role="presentation">
+            <div className="timeline-progress__track" aria-hidden="true">
+              <div className="timeline-progress__segment timeline-progress__segment--head" />
+              <div className="timeline-progress__segment timeline-progress__segment--between" />
+              <div className="timeline-progress__segment timeline-progress__segment--completed" />
+            </div>
+            <span className="timeline-progress__cursor" aria-hidden="true" />
+          </div>
+
+          <ul className="timeline-list">
+            <li className="item item--latest">
+              <div className="item__top">
+                <div className="chips">
+                  <span className="chip">RESEARCH</span>
+                </div>
+                <span className="time">3h Ago</span>
+              </div>
+              <p className="item__title">Editing homepage</p>
+              <p className="item__desc">Add acceptance criteria.</p>
+            </li>
+
+            <li className="item item--latest">
+              <div className="item__top">
+                <div className="chips">
+                  <span className="chip">RESEARCH</span>
+                </div>
+                <span className="time">3h Ago</span>
+              </div>
+              <p className="item__title">Editing homepage</p>
+              <p className="item__desc">Add acceptance criteria.</p>
+              <div className="dot" aria-hidden="true" />
+            </li>
+
+            <li className="item">
+              <div className="item__top">
+                <div className="chips">
+                  <span className="chip">STRATEGY</span>
+                  <span className="chip">TECH</span>
+                  <span className="chip">SOFTWARE</span>
+                </div>
+                <span className="time">9h Ago</span>
+              </div>
+              <p className="item__title">Review Required</p>
+              <p className="item__desc">Content for the Page needs approval.</p>
+              <div className="dot" aria-hidden="true" />
+            </li>
+
+            <li className="item">
+              <div className="item__top">
+                <div className="chips">
+                  <span className="chip">BUDGET</span>
+                  <span className="chip">TECH</span>
+                </div>
+                <span className="time">1d Ago</span>
+              </div>
+              <p className="item__title">Payment Processed</p>
+              <p className="item__desc">Payment of 600&#8364; has been received.</p>
+              <div className="dot" aria-hidden="true" />
+            </li>
+          </ul>
+        </div>
+      </section>
+      </section>
+    </>
   );
 }
