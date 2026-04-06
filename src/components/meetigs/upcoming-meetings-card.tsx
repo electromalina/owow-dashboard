@@ -133,7 +133,7 @@ export function UpcomingMeetingsCard() {
                 <div className="text-center text-lg font-semibold text-white font-mono">
                   {meeting.date.split(" ")[1]}
                 </div>
-                <div className="text-center text-[10px] tracking-wide text-[#888] font-mono">
+                <div className="text-center text-[10px] tracking-wide uppercase text-[#888] font-mono">
                   {meeting.date.split(" ")[0]}
                 </div>
               </div>
