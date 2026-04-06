@@ -51,7 +51,11 @@ function getLabelColors(rounded: number): { percent: string; used: string } {
   return { percent: "var(--orange)", used: "var(--orange)" };
 }
 
-export function BudgetSnapshotWidget() {
+type BudgetSnapshotWidgetProps = {
+  className?: string;
+};
+
+export function BudgetSnapshotWidget({ className = "" }: BudgetSnapshotWidgetProps) {
   const [usedPercent, setUsedPercent] = useState(0);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [historyMonth, setHistoryMonth] = useState("March");
@@ -125,7 +129,9 @@ export function BudgetSnapshotWidget() {
   }, [historyOpen, updateHistoryMonthLabel]);
 
   return (
-    <div className="budget-snapshot">
+    <div
+      className={["budget-snapshot", className].filter(Boolean).join(" ")}
+    >
       <div className="budget-card">
         <div className="budget-card__header">
           <div className="budget-card__title">

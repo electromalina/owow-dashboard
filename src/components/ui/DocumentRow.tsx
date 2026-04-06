@@ -2,11 +2,19 @@ import Link from "next/link";
 import { Document } from "@/src/data/documents";
 import StatusBadge from "./StatusBadge";
 
-export default function DocumentRow({ doc }: { doc: Document }) {
+type DocumentRowProps = {
+  doc: Document;
+  /** Align horizontal bleed with parent card padding (dashboard widget uses `widget`). */
+  rowBleed?: "page" | "widget";
+};
+
+export default function DocumentRow({ doc, rowBleed = "page" }: DocumentRowProps) {
+  const bleed =
+    rowBleed === "widget" ? "-mx-5 px-5" : "-mx-6 px-6";
   return (
     <Link
       href={`/documents/${doc.id}`}
-      className="flex items-center justify-between border-b border-off-white/20 py-4 -mx-6 px-6 transition-colors hover:bg-off-white/5"
+      className={`flex items-center justify-between border-b border-off-white/20 py-4 transition-colors hover:bg-off-white/5 ${bleed}`}
     >
       {/* Left: icon + info */}
       <div className="flex items-center gap-3">
@@ -18,8 +26,8 @@ export default function DocumentRow({ doc }: { doc: Document }) {
           )}
         </div>
         <div>
-          <p className="font-medium text-white">{doc.name}</p>
-          <p className="font-mono text-xs text-off-white">
+          <p className="text-sm font-medium text-white">{doc.name}</p>
+          <p className="font-mono text-[11px] leading-snug text-off-white">
             {doc.type}
             {doc.size && <span> · {doc.size}</span>}
             <span> · {doc.date}</span>

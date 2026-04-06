@@ -34,7 +34,7 @@ export function ProjectStatus({ activePhaseId, setActivePhaseId }: WidgetProps) 
   return (
     <div className="bg-off-black border border-white/10 rounded-2xl p-8 shadow-xl">
       {/* Widget 1 Header Styling */}
-      <h3 className="mb-3 text-lg font-semibold leading-tight text-white">
+      <h3 className="mb-3 font-heading text-lg font-medium leading-tight text-white">
         Project Status
       </h3>
 
@@ -73,10 +73,10 @@ export function ProjectStatus({ activePhaseId, setActivePhaseId }: WidgetProps) 
               </div>
 
               <div className="mt-4 text-center">
-                <p className={`text-base font-bold transition-colors ${isHovered || isInProgress ? 'text-white' : 'text-white/40'}`}>
+                <p className={`font-heading text-sm font-medium transition-colors ${isHovered || isInProgress ? 'text-white' : 'text-white/40'}`}>
                   {phase.title}
                 </p>
-                <p className={`font-mono text-xs uppercase tracking-wider mt-0.5 transition-colors ${isInProgress ? 'text-yellow font-bold' : 'text-white/30'}`}>
+                <p className={`mt-0.5 font-mono text-xs uppercase tracking-wider transition-colors ${isInProgress ? 'font-medium text-yellow' : 'text-white/30'}`}>
                   {phase.status}
                 </p>
               </div>
@@ -120,7 +120,7 @@ export function PhaseInfo({ activePhaseId, setActivePhaseId }: WidgetProps) {
             >
               <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            <h2 className="text-lg font-semibold leading-tight text-white">{activePhase.title}</h2>
+            <h2 className="font-heading text-lg font-medium leading-tight text-white">{activePhase.title}</h2>
           </div>
           {/* Phase Status Styling: Mono font, matching Widget 1 phase colors */}
           <span className="font-mono text-xs uppercase tracking-wider mt-0.5 ml-8 text-white">

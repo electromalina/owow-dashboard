@@ -13,7 +13,11 @@ const MAX_DOCS = 3;
 
 import DocumentRow from "@/src/components/ui/DocumentRow";
 
-export default function KeyDocuments() {
+type KeyDocumentsProps = {
+  className?: string;
+};
+
+export default function KeyDocuments({ className = "" }: KeyDocumentsProps) {
 
   // React tracks which tab is active.
   // activeTab stores the current category id ("proposal", "prd", "assets")
@@ -29,30 +33,31 @@ export default function KeyDocuments() {
   );
 
   return (
-    // dark card container
-    <div className="rounded-2xl border border-off-white/20 bg-off-black p-6">
-      <div className="flex items-start justify-between">
+    <div
+      className={`flex h-full min-h-0 flex-col rounded-2xl border border-off-white/15 bg-off-black p-5 ${className}`}
+    >
+      <div className="flex shrink-0 items-start justify-between gap-3">
         <div>
-          <h2 className="font-heading text-lg font-medium text-white"> 
+          <h2 className="font-heading text-lg font-medium leading-tight text-white">
             Key Documents
           </h2>
 
-          <p className="mt-1 font-mono text-xs uppercase tracking-wider text-off-white">
+          <p className="mt-1 font-mono text-[11px] uppercase tracking-wider text-off-white">
             Browse by Type
           </p>
         </div>
 
-        {/* "View all" link — navigates to the full documents page */}
         <a
           href="/documents"
-          className="rounded-full border border-blue px-4 py-1.5 text-xs text-blue transition-colors hover:bg-blue/10">
-          View all  ↗
+          className="shrink-0 rounded-lg border border-off-white/30 bg-transparent px-3 py-1.5 font-mono text-[11px] tracking-wide text-off-white transition-colors hover:bg-off-white/5 hover:text-white"
+        >
+          View all ↗
         </a>
       </div>
 
       {/* TAB NAVIGATION */}
 
-      <div className="mt-5 -mx-6 flex gap-6 border-b border-off-white/20 px-6">
+      <div className="mt-4 -mx-5 flex gap-6 border-b border-off-white/20 px-5">
         {WIDGET_CATEGORIES.map((cat) => {
           // Check if this tab is the currently active one
           const isActive = cat.id === activeTab;
@@ -87,16 +92,13 @@ export default function KeyDocuments() {
         })}
       </div>
 
-      {/* DOCUMENT LIST */}
-      <div className="mt-2">
+      <div className="mt-2 min-h-0 flex-1">
         {activeCategory?.documents.slice(0, MAX_DOCS).map((doc) => (
-          <DocumentRow key={doc.id} doc={doc} />
+          <DocumentRow key={doc.id} doc={doc} rowBleed="widget" />
         ))}
       </div>
 
-      {/* BOTTOM CTA  */}
-      {/* Links to the full documents page filtered by this category */}
-      <div className="mt-4">
+      <div className="mt-auto shrink-0 pt-4">
         <a
           href={`/documents?category=${activeTab}`}
           className="block w-full rounded-xl border border-off-white/30 py-3 text-center text-sm text-white transition-colors hover:bg-off-white/5"

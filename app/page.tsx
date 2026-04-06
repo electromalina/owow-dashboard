@@ -21,10 +21,10 @@ export default function Home() {
         </section>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(280px,1fr)]">
-        <KeyDocuments/>
-        <BudgetSnapshotWidget/>
-        <section className="rounded-2xl border border-off-white/15 bg-off-black/90 p-5 min-h-72">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(280px,1fr)] lg:items-stretch">
+        <KeyDocuments className="h-full min-h-0" />
+        <BudgetSnapshotWidget className="h-full min-h-0" />
+        <section className="flex h-full min-h-0 flex-col rounded-2xl border border-off-white/15 bg-off-black/90 p-5">
           <UpdatesWidget />
         </section>
       </div>
