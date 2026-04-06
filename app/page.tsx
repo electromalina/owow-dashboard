@@ -1,21 +1,26 @@
+"use client";
+import { useState } from "react";
 import { CardPlaceholder } from "@/src/components/ui/CardPlaceholder";
 // Home page content area composed of placeholder cards for noww.
 import KeyDocuments from "@/src/components/widgets/KeyDocuments";
 import UpdatesWidget from "@/src/components/widgets/UpdatesWidget";
+import { BudgetSnapshotWidget } from "@/src/components/budget-snapshot/BudgetSnapshotWidget";
+import { ProjectStatus, PhaseInfo } from "@/src/components/ProjectOverview";
 
 export default function Home() {
+  const [activePhaseId, setActivePhaseId] = useState('design');
   return (
     <>
-      <CardPlaceholder className="min-h-36" />
+      <ProjectStatus activePhaseId={activePhaseId} setActivePhaseId={setActivePhaseId} />
 
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1.5fr)_minmax(280px,1fr)]">
-        <CardPlaceholder className="min-h-56" />
+        <PhaseInfo activePhaseId={activePhaseId} setActivePhaseId={setActivePhaseId} />
         <CardPlaceholder className="min-h-56" />
       </div>
 
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(280px,1fr)]">
         <KeyDocuments/>
-        <CardPlaceholder className="min-h-72" />
+        <BudgetSnapshotWidget/>
         <section className="rounded-2xl border border-off-white/15 bg-off-black/90 p-5 min-h-72">
           <UpdatesWidget />
         </section>

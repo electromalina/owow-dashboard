@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
+  type Document,
   documentCategories,
   getTotalDocuments,
   getTotalCategories,
@@ -11,12 +13,20 @@ import DocumentRow from "@/src/components/ui/DocumentRow";
 // how many documents to show per category 
 const PREVIEW_COUNT = 2;
 
-export default function DocumentsPage() {
-  // track which categories are expanded (showing all docs)
-  const [expandedCategories, setExpandedCategories] = useState<string[]>(
-    documentCategories.map((cat) => cat.id)
-  );
+function normalize(s: string) {
+  return s.trim().toLowerCase();
+}
 
+function filterDocsBySearch(docs: Document[], search: string): Document[] {
+  const q = normalize(search);
+  if (!q) return docs;
+  return docs.filter((d) => normalize(d.name).includes(q));
+}
+
+export default function DocumentsPage() {
+  const [search, setSearch] = useState("");
+  // track which categories are expanded (showing all docs)
+  const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
   // toggle a category open or closed
   function toggleCategory(categoryId: string) {
     setExpandedCategories((prev) =>
@@ -25,6 +35,10 @@ export default function DocumentsPage() {
         : [...prev, categoryId] // add = expand
     );
   }
+
+  const hasAnyMatch = documentCategories.some(
+    (cat) => filterDocsBySearch(cat.documents, search).length > 0
+  );
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-10">
@@ -41,7 +55,7 @@ export default function DocumentsPage() {
           </p>
         </div>
 
-        {/* cction buttons (search, upload) */}
+        {/* action buttons (search, upload) */}
         <div className="flex items-center gap-3">
           {/* Search input */}
           <div className="flex items-center gap-2 rounded-full border border-off-white/20 bg-off-black px-4 py-2">
@@ -59,31 +73,45 @@ export default function DocumentsPage() {
             </svg>
             <input
               type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               placeholder="Search documents..."
-              className="bg-transparent text-sm text-white placeholder-off-white outline-none"
+              className="min-w-[12rem] bg-transparent text-sm text-white placeholder-off-white outline-none"
             />
           </div>
 
           {/* Upload button: yellow CTA matching OWOW brand */}
-          <button className="flex items-center gap-2 rounded-full bg-yellow px-5 py-2 text-sm font-medium text-black transition-colors hover:bg-yellow/90">
+          <Link
+            href="/documents/upload"
+            className="flex items-center gap-2 rounded-full bg-yellow px-5 py-2 text-sm font-medium text-black transition-colors hover:bg-yellow/90"
+          >
             + Upload
-          </button>
+          </Link>
         </div>
       </div>
 
       {/* CATEGORY SECTIONS */}
+      {!hasAnyMatch ? (
+        <p className="mt-8 text-center font-mono text-sm text-off-white">
+          No documents match your search.
+        </p>
+      ) : (
       <div className="mt-8 space-y-4">
         {documentCategories.map((cat) => {
+          const filteredDocs = filterDocsBySearch(cat.documents, search);
+
+          if (filteredDocs.length === 0) return null;
+
           // check if this category is currently expanded
           const isExpanded = expandedCategories.includes(cat.id);
 
           // if collapsed, show only first PREVIEW_COUNT documents
           const visibleDocs = isExpanded
-            ? cat.documents
-            : cat.documents.slice(0, PREVIEW_COUNT);
+            ? filteredDocs
+            : filteredDocs.slice(0, PREVIEW_COUNT);
 
           // how many docs are hidden when collapsed
-          const hiddenCount = cat.documents.length - PREVIEW_COUNT;
+          const hiddenCount = filteredDocs.length - PREVIEW_COUNT;
 
           return (
             <section
@@ -120,28 +148,29 @@ export default function DocumentsPage() {
                 </span>
               </button>
 
-              {/* Document rows: only visible when expanded */}
-              {isExpanded && (
+              {/* Document rows: always show first 2, rest only when expanded */}
+
                 <div className="px-6 pb-4">
                   {visibleDocs.map((doc) => (
                     <DocumentRow key={doc.id} doc={doc} />
                   ))}
 
-                  {/* "+X more" link if there are hidden documents */}
+                  {/* "+X more" link if there are hidden documents and shows only when collapsed */}
                   {!isExpanded && hiddenCount > 0 && (
                     <button
                       onClick={() => toggleCategory(cat.id)}
                       className="mt-3 text-sm text-blue hover:underline"
                     >
-                      +{hiddenCount} more - View all {cat.label} →
+                      +{hiddenCount} more in {cat.label} →
                     </button>
                   )}
                 </div>
-              )}
+              
             </section>
           );
         })}
       </div>
+      )}
     </div>
   );
 }

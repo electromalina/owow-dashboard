@@ -309,3 +309,27 @@ export function getTotalDocuments(): number {
 export function getTotalCategories(): number {
   return documentCategories.length;
 }
+
+/** Detail view fields used by `/documents/[id]` (category, external links, etc.) */
+export type DocumentDetail = Document & {
+  category?: string;
+  author?: string;
+  sourceLinks?: { label: string; url: string }[];
+  versions?: { version: string; date: string; isCurrent: boolean }[];
+};
+
+export function getDocumentById(id: string): DocumentDetail | null {
+  for (const cat of documentCategories) {
+    const found = cat.documents.find((d) => d.id === id);
+    if (!found) continue;
+    const detail: DocumentDetail = {
+      ...found,
+      category: cat.label,
+    };
+    if (found.sourceUrl) {
+      detail.sourceLinks = [{ label: "Open source", url: found.sourceUrl }];
+    }
+    return detail;
+  }
+  return null;
+}
