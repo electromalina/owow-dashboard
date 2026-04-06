@@ -309,12 +309,16 @@ export default function UpdatesWidget() {
             <li className="item item--latest">
               <div className="item__top">
                 <div className="chips">
-                  <span className="chip">RESEARCH</span>
+                  <span className="chip">MILESTONE</span>
+                  <span className="chip">DESIGN</span>
+                  <span className="chip">UI/UX</span>
                 </div>
                 <span className="time">3h Ago</span>
               </div>
-              <p className="item__title">Editing homepage</p>
-              <p className="item__desc">Add acceptance criteria.</p>
+              <p className="item__title">Design Phase Completed</p>
+              <p className="item__desc">
+                Design phase complete, UI/UX approved, development ready
+              </p>
             </li>
 
             <li className="item item--latest">
