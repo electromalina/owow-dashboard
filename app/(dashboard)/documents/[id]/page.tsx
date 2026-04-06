@@ -14,16 +14,16 @@ export default function DocumentDetailPage() {
   // if no document found, show a simple message
   if (!doc) {
     return (
-      <div className="px-6 py-10">
+      <div className="px-4 py-10 sm:px-6">
         <p className="text-off-white">Document not found.</p>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-10">
+    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-10">
       {/*  BREADCRUMB  */}
-      <nav className="flex items-center gap-2 text-sm">
+      <nav className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
         <a href="/documents" className="text-blue hover:underline">
           Documents
         </a>
@@ -34,12 +34,12 @@ export default function DocumentDetailPage() {
             <span className="text-off-white">›</span>
           </>
         )}
-        <span className="text-off-white">{doc.name}</span>
+        <span className="min-w-0 break-words text-off-white">{doc.name}</span>
       </nav>
 
       {/* TITLE SECTION */}
-      <div className="mt-6 flex items-start justify-between">
-        <div className="flex items-start gap-4">
+      <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex min-w-0 items-start gap-4">
           {/* Large document icon */}
           <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-off-white/10">
             <svg
@@ -59,9 +59,9 @@ export default function DocumentDetailPage() {
             </svg>
           </div>
 
-          <div>
+          <div className="min-w-0">
             {/* Type + version badges */}
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <span className="rounded-md bg-off-white/10 px-2 py-0.5 font-mono text-xs text-off-white">
                 {doc.type}
               </span>
@@ -72,14 +72,14 @@ export default function DocumentDetailPage() {
               )}
             </div>
             {/* Document title */}
-            <h1 className="mt-2 font-heading text-2xl font-semibold text-white">
+            <h1 className="mt-2 break-words font-heading text-2xl font-semibold text-white">
               {doc.name}
             </h1>
           </div>
         </div>
 
         {/* Action buttons */}
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 flex-wrap items-center gap-2 sm:gap-3">
           <button className="flex items-center gap-2 rounded-full border border-off-white/30 px-5 py-2 text-sm text-white transition-colors hover:bg-off-white/5">
             ↓ Download
           </button>
@@ -96,11 +96,11 @@ export default function DocumentDetailPage() {
       </div>
 
       {/* MAIN CONTENT: preview + sidebar */}
-      <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_340px]">
+      <div className="mt-8 grid min-w-0 gap-6 lg:grid-cols-[1fr_340px]">
         {/* Document preview placeholder */}
-        <div className="rounded-2xl border border-off-white/20 bg-off-black">
+        <div className="min-w-0 rounded-2xl border border-off-white/20 bg-off-black">
           {/* Preview header */}
-          <div className="flex items-center justify-between border-b border-off-white/10 px-6 py-3">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-off-white/10 px-4 py-3 sm:px-6">
             <div className="flex items-center gap-2 text-sm text-off-white">
               <svg
                 width="14"
@@ -120,7 +120,7 @@ export default function DocumentDetailPage() {
           </div>
 
           {/* Fake preview content — gray bars simulating text lines */}
-          <div className="space-y-3 p-8">
+          <div className="space-y-3 p-4 sm:p-8">
             <div className="h-4 w-3/4 rounded bg-off-white/10" />
             <div className="h-3 w-full rounded bg-off-white/5" />
             <div className="h-3 w-full rounded bg-off-white/5" />
@@ -142,7 +142,7 @@ export default function DocumentDetailPage() {
         </div>
 
         {/* SIDEBAR */}
-        <div className="space-y-4">
+        <div className="min-w-0 space-y-4">
           {/* Document info card */}
           <div className="rounded-2xl border border-off-white/20 bg-off-black p-5">
             <h3 className="font-mono text-xs uppercase tracking-wider text-off-white">
@@ -150,32 +150,32 @@ export default function DocumentDetailPage() {
             </h3>
             <dl className="mt-4 divide-y divide-off-white/10">
               {doc.author && (
-                <div className="flex justify-between py-3">
-                  <dt className="font-mono text-xs uppercase text-off-white">Author</dt>
-                  <dd className="text-sm text-white">{doc.author}</dd>
+                <div className="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                  <dt className="shrink-0 font-mono text-xs uppercase text-off-white">Author</dt>
+                  <dd className="min-w-0 break-words text-sm text-white sm:text-right">{doc.author}</dd>
                 </div>
               )}
               {doc.category && (
-                <div className="flex justify-between py-3">
-                  <dt className="font-mono text-xs uppercase text-off-white">Category</dt>
-                  <dd className="text-sm text-white">{doc.category}</dd>
+                <div className="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                  <dt className="shrink-0 font-mono text-xs uppercase text-off-white">Category</dt>
+                  <dd className="min-w-0 break-words text-sm text-white sm:text-right">{doc.category}</dd>
                 </div>
               )}
-              <div className="flex justify-between py-3">
-                <dt className="font-mono text-xs uppercase text-off-white">File Type</dt>
-                <dd className="text-sm text-white">
+              <div className="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                <dt className="shrink-0 font-mono text-xs uppercase text-off-white">File Type</dt>
+                <dd className="min-w-0 break-words text-sm text-white sm:text-right">
                   {doc.type} — {doc.type === "DOC" ? "Word Document" : doc.type === "PDF" ? "PDF Document" : "External Link"}
                 </dd>
               </div>
               {doc.size && (
-                <div className="flex justify-between py-3">
-                  <dt className="font-mono text-xs uppercase text-off-white">File Size</dt>
-                  <dd className="text-sm text-white">{doc.size}</dd>
+                <div className="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                  <dt className="shrink-0 font-mono text-xs uppercase text-off-white">File Size</dt>
+                  <dd className="min-w-0 break-words text-sm text-white sm:text-right">{doc.size}</dd>
                 </div>
               )}
-              <div className="flex justify-between py-3">
-                <dt className="font-mono text-xs uppercase text-off-white">Last Updated</dt>
-                <dd className="text-sm text-white">{doc.date}</dd>
+              <div className="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                <dt className="shrink-0 font-mono text-xs uppercase text-off-white">Last Updated</dt>
+                <dd className="min-w-0 break-words text-sm text-white sm:text-right">{doc.date}</dd>
               </div>
             </dl>
             {/* Status badge at the bottom of info card */}
@@ -196,9 +196,9 @@ export default function DocumentDetailPage() {
                     key={link.label}
                     href={link.url}
                     target="_blank"
-                    className="flex items-center justify-between rounded-xl border border-off-white/10 px-4 py-3 text-sm text-white transition-colors hover:bg-off-white/5"
+                    className="flex min-w-0 items-center justify-between gap-2 rounded-xl border border-off-white/10 px-4 py-3 text-sm text-white transition-colors hover:bg-off-white/5"
                   >
-                    <div className="flex items-center gap-2">
+                    <div className="flex min-w-0 items-center gap-2">
                       <svg
                         width="14"
                         height="14"
@@ -212,9 +212,9 @@ export default function DocumentDetailPage() {
                         <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
                         <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
                       </svg>
-                      {link.label}
+                      <span className="truncate">{link.label}</span>
                     </div>
-                    <span className="text-off-white">↗</span>
+                    <span className="shrink-0 text-off-white">↗</span>
                   </a>
                 ))}
               </div>

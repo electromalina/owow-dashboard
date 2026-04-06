@@ -73,8 +73,15 @@ export function Header({ navLinks }: HeaderProps) {
 
   return (
     <>
-      <div className="flex items-center justify-between pb-6 lg:pb-8 lg:pt-3">
-        <Image src="/owow.svg" alt="OWOW" width={123} height={28} priority />
+      <div className="flex min-w-0 items-center justify-between gap-3 pb-6 lg:pb-8 lg:pt-3">
+        <Image
+          src="/owow.svg"
+          alt="OWOW"
+          width={123}
+          height={28}
+          priority
+          sizes="123px"
+        />
 
         <div className="flex items-center gap-3">
           <button
@@ -99,7 +106,15 @@ export function Header({ navLinks }: HeaderProps) {
               onClick={() => setProfileOpen((open) => !open)}
               className="cursor-pointer rounded-lg border border-off-white/30 bg-transparent p-2.5 transition-colors hover:bg-off-black"
             >
-              <Image src="/profile.svg" alt="" width={32} height={32} />
+              <Image
+                src="/profile.svg"
+                alt=""
+                width={32}
+                height={32}
+                sizes="32px"
+                loading="lazy"
+                fetchPriority="low"
+              />
             </button>
             {profileOpen ? (
               <div
@@ -151,7 +166,15 @@ export function Header({ navLinks }: HeaderProps) {
                 onClick={() => setIsMenuOpen(false)}
                 className="cursor-pointer rounded-lg border border-off-white/30 bg-transparent p-2.5 transition-colors hover:bg-off-black"
               >
-                <Image src="/close-icon.svg" alt="" width={32} height={32} />
+                <Image
+                  src="/close-icon.svg"
+                  alt=""
+                  width={32}
+                  height={32}
+                  sizes="32px"
+                  loading="lazy"
+                  fetchPriority="low"
+                />
               </button>
             </div>
 
@@ -167,7 +190,7 @@ export function Header({ navLinks }: HeaderProps) {
                   <Link
                     key={`${link.href}-${link.label}`}
                     href={link.href}
-                    prefetch={false}
+                    prefetch={link.href !== "/admin"}
                     onClick={() => setIsMenuOpen(false)}
                     className={`block w-full whitespace-nowrap rounded-lg border px-4 py-3 text-center text-[11px] tracking-[0.12em] font-mono uppercase transition-[background-color,color,border-color] duration-300 ease-out ${
                       isActive

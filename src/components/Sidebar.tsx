@@ -33,7 +33,7 @@ export function Sidebar({ links }: { links: NavLink[] }) {
               <Link
                 key={`${link.href}-${link.label}`}
                 href={link.href}
-                prefetch={false}
+                prefetch={link.href !== "/admin"}
                 className={`block w-full whitespace-nowrap rounded-lg border px-4 py-3 text-center text-[11px] tracking-[0.12em] font-mono uppercase transition-[background-color,color,border-color] duration-300 ease-out ${
                   isActive
                     ? "border-yellow bg-yellow text-black hover:bg-yellow hover:text-black"

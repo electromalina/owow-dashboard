@@ -83,7 +83,7 @@ function SupportIcon({ className }: { className?: string }) {
 
 export default function ContactInfoPage() {
   return (
-    <div className="mx-auto max-w-4xl px-6 py-10">
+    <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-10">
       <div>
         <h1 className="font-heading text-3xl font-semibold text-white">
           Contact
@@ -100,13 +100,13 @@ export default function ContactInfoPage() {
         {/* Primary: Slack + PM */}
         <section className="relative overflow-hidden rounded-2xl border border-yellow/35 bg-off-black">
           <div className="absolute inset-y-0 left-0 w-1 bg-yellow" aria-hidden />
-          <div className="p-6 pl-8">
+          <div className="p-5 pl-6 sm:p-6 sm:pl-8">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-              <div className="flex gap-4">
+              <div className="flex min-w-0 gap-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-yellow/15 text-yellow">
                   <SlackIcon className="h-6 w-6" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <p className="font-mono text-xs uppercase tracking-wider text-off-white">
                     Primary — Slack
                   </p>
@@ -136,13 +136,13 @@ export default function ContactInfoPage() {
         </section>
 
         {/* Email */}
-        <section className="rounded-2xl border border-off-white/20 bg-off-black p-6">
+        <section className="rounded-2xl border border-off-white/20 bg-off-black p-5 sm:p-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <div className="flex gap-4">
+            <div className="flex min-w-0 gap-4">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-off-white/10 text-blue">
                 <MailIcon />
               </div>
-              <div>
+              <div className="min-w-0">
                 <p className="font-mono text-xs uppercase tracking-wider text-off-white">
                   Email
                 </p>
@@ -154,7 +154,7 @@ export default function ContactInfoPage() {
                 </p>
                 <a
                   href={`mailto:${CONTACT.email.address}`}
-                  className="mt-4 inline-block font-mono text-sm text-blue transition-colors hover:text-blue/80 hover:underline"
+                  className="mt-4 inline-block break-all font-mono text-sm text-blue transition-colors hover:text-blue/80 hover:underline"
                 >
                   {CONTACT.email.address}
                 </a>
@@ -164,13 +164,13 @@ export default function ContactInfoPage() {
         </section>
 
         {/* Portal tech support */}
-        <section className="rounded-2xl border border-off-white/20 bg-off-black p-6">
+        <section className="rounded-2xl border border-off-white/20 bg-off-black p-5 sm:p-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <div className="flex gap-4">
+            <div className="flex min-w-0 gap-4">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-off-white/10 text-off-white">
                 <SupportIcon />
               </div>
-              <div>
+              <div className="min-w-0">
                 <p className="font-mono text-xs uppercase tracking-wider text-off-white">
                   This portal
                 </p>
@@ -182,7 +182,7 @@ export default function ContactInfoPage() {
                 </p>
                 <a
                   href={`mailto:${CONTACT.support.address}?subject=OWOW%20Dashboard%20support`}
-                  className="mt-4 inline-block font-mono text-sm text-blue transition-colors hover:text-blue/80 hover:underline"
+                  className="mt-4 inline-block break-all font-mono text-sm text-blue transition-colors hover:text-blue/80 hover:underline"
                 >
                   {CONTACT.support.address}
                 </a>

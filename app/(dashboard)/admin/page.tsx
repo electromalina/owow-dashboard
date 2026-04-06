@@ -1,6 +1,6 @@
 export default function AdminPage() {
   return (
-    <div className="grid gap-4 lg:grid-cols-2">
+    <div className="grid min-w-0 gap-4 lg:grid-cols-2">
       <section className="min-h-40 rounded-2xl border border-off-white/15 bg-black/40 p-6 backdrop-blur-sm">
         <h2 className="font-mono text-xs uppercase tracking-[0.12em] text-off-white/80">
           Content

@@ -12,7 +12,27 @@ function redirectWithCookies(
   return redirect;
 }
 
+function hasSupabaseAuthCookie(request: NextRequest): boolean {
+  return request.cookies.getAll().some((c) => c.name.startsWith("sb-"));
+}
+
 export async function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+  const isAuthRoute = pathname === "/auth" || pathname.startsWith("/auth/");
+  const isAdminRoute = pathname.startsWith("/admin");
+  const isLoginPage = pathname === "/auth";
+
+  // Skip Supabase network validation when there is no session cookie (logged-out users).
+  if (!hasSupabaseAuthCookie(request)) {
+    if (isAuthRoute) {
+      return NextResponse.next();
+    }
+    const url = request.nextUrl.clone();
+    url.pathname = "/auth";
+    url.searchParams.set("next", pathname);
+    return NextResponse.redirect(url);
+  }
+
   const response = NextResponse.next({
     request: {
       headers: request.headers,
@@ -25,13 +45,7 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const pathname = request.nextUrl.pathname;
-  const isAuthRoute = pathname === "/auth" || pathname.startsWith("/auth/");
-  const isAdminRoute = pathname.startsWith("/admin");
-  const isLoginPage = pathname === "/auth";
-
-  // Avoid a profiles DB round-trip on every navigation (and on Link prefetch).
-  // Role is only needed for /admin and for redirecting away from /auth when signed in.
+  // Role fetch only for /admin and /auth (login redirect when already signed in).
   const needsProfileRole = Boolean(user) && (isAdminRoute || isLoginPage);
 
   let role: "admin" | "user" | null = null;
@@ -76,6 +90,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!api/|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|woff2?)$).*)",
   ],
 };

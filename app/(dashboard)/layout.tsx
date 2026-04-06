@@ -35,7 +35,9 @@ export default async function DashboardLayout({
           <section className="hidden lg:block">
             <Sidebar links={navLinks} />
           </section>
-          <section className="space-y-4 lg:pr-6">{children}</section>
+          <section className="min-w-0 w-full max-w-full space-y-4 overflow-x-hidden lg:pr-6">
+            {children}
+          </section>
         </div>
 
         <Footer />
