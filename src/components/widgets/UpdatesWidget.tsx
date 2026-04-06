@@ -19,12 +19,19 @@ export default function UpdatesWidget() {
           --line-amber: #f5be0b;
           --rail-head-height: 24px;
           --rail-between-height: 0px;
+          box-sizing: border-box;
           width: 100%;
+          max-width: 100%;
+          min-width: 0;
           height: 100%;
+          overflow-x: hidden;
         }
 
         .widget {
+          box-sizing: border-box;
           width: 100%;
+          max-width: 100%;
+          min-width: 0;
           height: 100%;
           min-height: 390px;
           padding: 8px 10px 8px 10px;

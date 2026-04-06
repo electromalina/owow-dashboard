@@ -36,8 +36,8 @@ export default function KeyDocuments({ className = "" }: KeyDocumentsProps) {
     <div
       className={`flex h-full min-h-0 flex-col rounded-2xl border border-off-white/15 bg-off-black p-5 ${className}`}
     >
-      <div className="flex shrink-0 items-start justify-between gap-3">
-        <div>
+      <div className="flex shrink-0 flex-col items-stretch justify-between gap-3 sm:flex-row sm:items-start">
+        <div className="min-w-0">
           <h2 className="font-heading text-lg font-medium leading-tight text-white">
             Key Documents
           </h2>
@@ -49,7 +49,7 @@ export default function KeyDocuments({ className = "" }: KeyDocumentsProps) {
 
         <a
           href="/documents"
-          className="shrink-0 rounded-lg border border-off-white/30 bg-transparent px-3 py-1.5 font-mono text-[11px] tracking-wide text-off-white transition-colors hover:bg-off-white/5 hover:text-white"
+          className="shrink-0 self-start rounded-lg border border-off-white/30 bg-transparent px-3 py-1.5 font-mono text-[11px] tracking-wide text-off-white transition-colors hover:bg-off-white/5 hover:text-white sm:self-auto"
         >
           View all ↗
         </a>
@@ -57,7 +57,7 @@ export default function KeyDocuments({ className = "" }: KeyDocumentsProps) {
 
       {/* TAB NAVIGATION */}
 
-      <div className="mt-4 -mx-5 flex gap-6 border-b border-off-white/20 px-5">
+      <div className="mt-4 -mx-5 flex gap-4 overflow-x-auto border-b border-off-white/20 px-5 pb-px [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-6 [&::-webkit-scrollbar]:hidden">
         {WIDGET_CATEGORIES.map((cat) => {
           // Check if this tab is the currently active one
           const isActive = cat.id === activeTab;

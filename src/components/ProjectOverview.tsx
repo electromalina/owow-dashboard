@@ -32,19 +32,21 @@ export function ProjectStatus({ activePhaseId, setActivePhaseId }: WidgetProps) 
   const trackPercent = lastActiveIndex / (PROJECT_PHASES.length - 1);
 
   return (
-    <div className="bg-off-black border border-white/10 rounded-2xl p-8 shadow-xl">
+    <div className="rounded-2xl border border-white/10 bg-off-black p-4 shadow-xl sm:p-6 md:p-8">
       {/* Widget 1 Header Styling */}
       <h3 className="mb-3 font-heading text-lg font-medium leading-tight text-white">
         Project Status
       </h3>
 
-      <div className="relative flex justify-between items-start">
-        <div className="absolute top-4 left-10 right-10 h-[2px] bg-white/10 z-0" />
-        <div
-          className="absolute top-4 left-10 h-[2px] bg-green z-0 transition-all duration-1000 ease-out"
-          style={{ width: `calc(${trackPercent} * (100% - 5rem))` }}
-        />
+      <div className="-mx-1 overflow-x-auto overflow-y-visible pb-1 sm:mx-0 sm:overflow-visible sm:pb-0">
+        <div className="relative min-w-[520px] sm:min-w-0">
+          <div className="absolute top-4 left-8 right-8 z-0 h-[2px] bg-white/10 sm:left-10 sm:right-10" />
+          <div
+            className="absolute top-4 left-8 z-0 h-[2px] bg-green transition-all duration-1000 ease-out sm:left-10"
+            style={{ width: `calc(${trackPercent} * (100% - 5rem))` }}
+          />
 
+          <div className="relative z-10 flex items-start justify-between">
         {PROJECT_PHASES.map((phase) => {
           const isCompleted = phase.status === 'Completed';
           const isInProgress = phase.status === 'In Progress';
@@ -53,7 +55,7 @@ export function ProjectStatus({ activePhaseId, setActivePhaseId }: WidgetProps) 
           return (
             <div
               key={phase.id}
-              className="relative z-10 flex flex-col items-center cursor-pointer group"
+              className="group relative z-10 flex shrink-0 cursor-pointer flex-col items-center px-1 sm:px-0"
               onClick={() => setActivePhaseId(phase.id)}
               onMouseEnter={() => setHoveredPhaseId(phase.id)}
               onMouseLeave={() => setHoveredPhaseId(null)}
@@ -83,6 +85,8 @@ export function ProjectStatus({ activePhaseId, setActivePhaseId }: WidgetProps) 
             </div>
           );
         })}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -105,7 +109,7 @@ export function PhaseInfo({ activePhaseId, setActivePhaseId }: WidgetProps) {
   };
 
   return (
-    <div className="bg-off-black border border-white/10 rounded-2xl p-8 shadow-xl">
+    <div className="rounded-2xl border border-white/10 bg-off-black p-4 shadow-xl sm:p-6 md:p-8">
       <div className="relative mb-6">
         <button
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -129,7 +133,7 @@ export function PhaseInfo({ activePhaseId, setActivePhaseId }: WidgetProps) {
         </button>
 
         {isDropdownOpen && (
-          <div className="absolute top-full left-0 mt-2 w-56 bg-off-black border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden">
+          <div className="absolute left-0 top-full z-50 mt-2 max-h-[min(22rem,calc(100dvh-8rem))] w-56 max-w-[calc(100vw-2rem)] overflow-y-auto rounded-xl border border-white/10 bg-off-black shadow-2xl sm:max-w-none">
             {PROJECT_PHASES.map((p) => (
               <button
                 key={p.id}
@@ -182,7 +186,7 @@ export default function ProjectOverview() {
   const [activePhaseId, setActivePhaseId] = useState('design');
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-4xl">
+    <div className="flex w-full max-w-4xl flex-col gap-6">
       <ProjectStatus activePhaseId={activePhaseId} setActivePhaseId={setActivePhaseId} />
       <PhaseInfo activePhaseId={activePhaseId} setActivePhaseId={setActivePhaseId} />
     </div>
