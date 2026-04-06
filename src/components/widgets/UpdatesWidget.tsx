@@ -1,8 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function UpdatesWidget() {
+  const router = useRouter();
+
   return (
     <>
       <style jsx>{`
@@ -284,9 +286,13 @@ export default function UpdatesWidget() {
           <h1 id="updates-title" className="title">
             Updates
           </h1>
-          <Link href="/updates" className="view-all">
+          <button
+            className="view-all"
+            type="button"
+            onClick={() => router.push("/updates")}
+          >
             VIEW ALL
-          </Link>
+          </button>
         </header>
 
         <div className="timeline-stack">
