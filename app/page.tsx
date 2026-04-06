@@ -6,6 +6,7 @@ import KeyDocuments from "@/src/components/widgets/KeyDocuments";
 import UpdatesWidget from "@/src/components/widgets/UpdatesWidget";
 import { BudgetSnapshotWidget } from "@/src/components/budget-snapshot/BudgetSnapshotWidget";
 import { ProjectStatus, PhaseInfo } from "@/src/components/ProjectOverview";
+import { UpcomingMeetingsCard } from "@/src/components/meetigs/upcoming-meetings-card";
 
 export default function Home() {
   const [activePhaseId, setActivePhaseId] = useState('design');
@@ -15,7 +16,9 @@ export default function Home() {
 
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1.5fr)_minmax(280px,1fr)]">
         <PhaseInfo activePhaseId={activePhaseId} setActivePhaseId={setActivePhaseId} />
-        <CardPlaceholder className="min-h-56" />
+        <section className="rounded-2xl border border-off-white/15 bg-off-black/90 p-5 min-h-56">
+          <UpcomingMeetingsCard />
+        </section>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(280px,1fr)]">
