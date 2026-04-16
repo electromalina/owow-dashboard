@@ -8,6 +8,7 @@ import { useState } from "react";
 import { sidebarLinks } from "@/src/components/sidebar-links";
 
 export function Header() {
+  // Mobile navigation lives in the header; desktop navigation is rendered by `Sidebar`.
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
 

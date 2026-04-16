@@ -1,7 +1,5 @@
 "use client";
 import { useState } from "react";
-import { CardPlaceholder } from "@/src/components/ui/CardPlaceholder";
-// Home page content area composed of placeholder cards for noww.
 import KeyDocuments from "@/src/components/widgets/KeyDocuments";
 import UpdatesWidget from "@/src/components/widgets/UpdatesWidget";
 import { BudgetSnapshotWidget } from "@/src/components/budget-snapshot/BudgetSnapshotWidget";
@@ -9,7 +7,8 @@ import { ProjectStatus, PhaseInfo } from "@/src/components/ProjectOverview";
 import { UpcomingMeetingsCard } from "@/src/components/meetigs/upcoming-meetings-card";
 
 export default function Home() {
-  const [activePhaseId, setActivePhaseId] = useState('design');
+  // Phase selection is shared across the status header and the phase details panel.
+  const [activePhaseId, setActivePhaseId] = useState("design");
   return (
     <>
       <ProjectStatus activePhaseId={activePhaseId} setActivePhaseId={setActivePhaseId} />

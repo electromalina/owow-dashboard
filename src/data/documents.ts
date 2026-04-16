@@ -1,4 +1,4 @@
-// hardcoded types 
+// Mock document data used by widgets and the documents pages.
 export type DocumentStatus = "approved" | "review" | "active" | "draft";
 export type DocumentType = "PDF" | "DOC" | "LINK";
 
@@ -6,10 +6,10 @@ export interface Document {
   id: string;
   name: string;
   type: DocumentType;
-  size?: string; //optionla cuz links dont have file size
+  size?: string;
   date: string;
   status: DocumentStatus;
-  sourceUrl?: string; //optional - only for links
+  sourceUrl?: string;
 }
 
 export interface DocumentCategory {
@@ -18,7 +18,6 @@ export interface DocumentCategory {
   documents: Document[];
 }
 
-// Mock data (widget and full pages import from here)
 export const documentCategories: DocumentCategory[] = [
   {
     id: "proposal",

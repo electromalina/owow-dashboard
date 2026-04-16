@@ -1,4 +1,4 @@
-// Shared sidebar route definitions used by desktop and mobile navigation.
+// Shared route definitions used by both `Sidebar` (desktop) and `Header` (mobile drawer).
 export const sidebarLinks = [
   { label: "DASHBOARD VIEW", href: "/" },
   { label: "UPDATES", href: "/updates" },

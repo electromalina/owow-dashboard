@@ -1,17 +1,15 @@
 "use client";
 
-// useParams lets me read the [id] from the URL
-// like /documents/prd-1 to params.id = "prd-1"
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { getDocumentById } from "@/src/data/documents";
 import StatusBadge from "@/src/components/ui/StatusBadge";
 
 export default function DocumentDetailPage() {
-  // grab the document id from the URL
+  // Reads the dynamic route param and looks up the corresponding document in our data source.
   const params = useParams();
   const doc = getDocumentById(params.id as string);
 
-  // if no document found, show a simple message
   if (!doc) {
     return (
       <div className="px-6 py-10">
@@ -24,9 +22,9 @@ export default function DocumentDetailPage() {
     <div className="mx-auto max-w-5xl px-6 py-10">
       {/*  BREADCRUMB  */}
       <nav className="flex items-center gap-2 text-sm">
-        <a href="/documents" className="text-blue hover:underline">
+        <Link href="/documents" className="text-blue hover:underline">
           Documents
-        </a>
+        </Link>
         <span className="text-off-white">›</span>
         {doc.category && (
           <>
@@ -37,10 +35,8 @@ export default function DocumentDetailPage() {
         <span className="text-off-white">{doc.name}</span>
       </nav>
 
-      {/* TITLE SECTION */}
       <div className="mt-6 flex items-start justify-between">
         <div className="flex items-start gap-4">
-          {/* Large document icon */}
           <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-off-white/10">
             <svg
               width="28"
@@ -51,7 +47,6 @@ export default function DocumentDetailPage() {
               strokeWidth="1.5"
               className="text-off-white"
             >
-              {/* same document icon but larger (28px), shows the file type visually next to the title*/}
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
               <polyline points="14 2 14 8 20 8" />
               <line x1="16" y1="13" x2="8" y2="13" />
@@ -60,7 +55,6 @@ export default function DocumentDetailPage() {
           </div>
 
           <div>
-            {/* Type + version badges */}
             <div className="flex items-center gap-2">
               <span className="rounded-md bg-off-white/10 px-2 py-0.5 font-mono text-xs text-off-white">
                 {doc.type}
@@ -71,14 +65,12 @@ export default function DocumentDetailPage() {
                 </span>
               )}
             </div>
-            {/* Document title */}
             <h1 className="mt-2 font-heading text-2xl font-semibold text-white">
               {doc.name}
             </h1>
           </div>
         </div>
 
-        {/* Action buttons */}
         <div className="flex items-center gap-3">
           <button className="flex items-center gap-2 rounded-full border border-off-white/30 px-5 py-2 text-sm text-white transition-colors hover:bg-off-white/5">
             ↓ Download
@@ -95,11 +87,8 @@ export default function DocumentDetailPage() {
         </div>
       </div>
 
-      {/* MAIN CONTENT: preview + sidebar */}
       <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_340px]">
-        {/* Document preview placeholder */}
         <div className="rounded-2xl border border-off-white/20 bg-off-black">
-          {/* Preview header */}
           <div className="flex items-center justify-between border-b border-off-white/10 px-6 py-3">
             <div className="flex items-center gap-2 text-sm text-off-white">
               <svg
@@ -110,7 +99,6 @@ export default function DocumentDetailPage() {
                 stroke="currentColor"
                 strokeWidth="1.5"
               >
-                {/* small document icon for the preview section header*/}
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                 <polyline points="14 2 14 8 20 8" />
               </svg>
@@ -119,7 +107,6 @@ export default function DocumentDetailPage() {
             <span className="text-xs text-off-white">Page 1 of 12</span>
           </div>
 
-          {/* Fake preview content — gray bars simulating text lines */}
           <div className="space-y-3 p-8">
             <div className="h-4 w-3/4 rounded bg-off-white/10" />
             <div className="h-3 w-full rounded bg-off-white/5" />
@@ -131,7 +118,6 @@ export default function DocumentDetailPage() {
             <div className="h-3 w-full rounded bg-off-white/5" />
             <div className="h-3 w-full rounded bg-off-white/5" />
             <div className="h-3 w-3/4 rounded bg-off-white/5" />
-            {/* Placeholder image blocks */}
             <div className="mt-4 flex gap-4">
               <div className="h-24 w-1/2 rounded-lg bg-off-white/5" />
               <div className="h-24 w-1/2 rounded-lg bg-off-white/5" />
@@ -141,9 +127,7 @@ export default function DocumentDetailPage() {
           </div>
         </div>
 
-        {/* SIDEBAR */}
         <div className="space-y-4">
-          {/* Document info card */}
           <div className="rounded-2xl border border-off-white/20 bg-off-black p-5">
             <h3 className="font-mono text-xs uppercase tracking-wider text-off-white">
               Document Info
@@ -178,13 +162,11 @@ export default function DocumentDetailPage() {
                 <dd className="text-sm text-white">{doc.date}</dd>
               </div>
             </dl>
-            {/* Status badge at the bottom of info card */}
             <div className="border-t border-off-white/10 pt-4 mt-1">
               <StatusBadge status={doc.status} />
             </div>
           </div>
 
-          {/* Source links card */}
           {doc.sourceLinks && doc.sourceLinks.length > 0 && (
             <div className="rounded-2xl border border-off-white/20 bg-off-black p-5">
               <h3 className="font-mono text-xs uppercase tracking-wider text-off-white">
@@ -221,7 +203,6 @@ export default function DocumentDetailPage() {
             </div>
           )}
 
-          {/* Version history card */}
           {doc.versions && doc.versions.length > 0 && (
             <div className="rounded-2xl border border-off-white/20 bg-off-black p-5">
               <h3 className="font-mono text-xs uppercase tracking-wider text-off-white">
@@ -231,7 +212,6 @@ export default function DocumentDetailPage() {
                 {doc.versions.map((v) => (
                   <div key={v.version} className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      {/* yellow dot for current, gray for older */}
                       <span
                         className={`h-2 w-2 rounded-full ${
                           v.isCurrent ? "bg-yellow" : "bg-off-white/30"

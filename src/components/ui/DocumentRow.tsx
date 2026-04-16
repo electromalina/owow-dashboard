@@ -16,7 +16,6 @@ export default function DocumentRow({ doc, rowBleed = "page" }: DocumentRowProps
       href={`/documents/${doc.id}`}
       className={`flex items-center justify-between border-b border-off-white/20 py-4 transition-colors hover:bg-off-white/5 ${bleed}`}
     >
-      {/* Left: icon + info */}
       <div className="flex items-center gap-3">
         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-off-white/10">
           {doc.type === "LINK" ? (
@@ -35,7 +34,6 @@ export default function DocumentRow({ doc, rowBleed = "page" }: DocumentRowProps
         </div>
       </div>
 
-      {/* Right: status */}
       <StatusBadge status={doc.status} />
     </Link>
   );

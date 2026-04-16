@@ -1,33 +1,22 @@
 "use client";
 
-//it lets the component remember thingsw hich tab is currently selected
 import { useState } from "react";
+import Link from "next/link";
 
-// import mock data and types from the shared data file
 import { documentCategories } from "@/src/data/documents";
-//olny show 3 categories and max 3 doc in each
+import DocumentRow from "@/src/components/ui/DocumentRow";
+
+// Widget intentionally shows a small “at-a-glance” subset of the full documents page.
 const WIDGET_CATEGORIES = documentCategories.slice(0, 3);
 const MAX_DOCS = 3;
-
-
-
-import DocumentRow from "@/src/components/ui/DocumentRow";
 
 type KeyDocumentsProps = {
   className?: string;
 };
 
 export default function KeyDocuments({ className = "" }: KeyDocumentsProps) {
-
-  // React tracks which tab is active.
-  // activeTab stores the current category id ("proposal", "prd", "assets")
-  // setActiveTab is the function to change it
-  // default to the first category in data
   const [activeTab, setActiveTab] = useState(WIDGET_CATEGORIES[0].id);
 
-
-  // Find the full category object that matches the active tab
-  // .find() loops through the array and returns the first match
   const activeCategory = WIDGET_CATEGORIES.find(
     (cat) => cat.id === activeTab
   );
@@ -47,19 +36,16 @@ export default function KeyDocuments({ className = "" }: KeyDocumentsProps) {
           </p>
         </div>
 
-        <a
+        <Link
           href="/documents"
           className="shrink-0 rounded-lg border border-off-white/30 bg-transparent px-3 py-1.5 font-mono text-[11px] tracking-wide text-off-white transition-colors hover:bg-off-white/5 hover:text-white"
         >
           View all ↗
-        </a>
+        </Link>
       </div>
-
-      {/* TAB NAVIGATION */}
 
       <div className="mt-4 -mx-5 flex gap-6 border-b border-off-white/20 px-5">
         {WIDGET_CATEGORIES.map((cat) => {
-          // Check if this tab is the currently active one
           const isActive = cat.id === activeTab;
 
           return (
@@ -83,7 +69,6 @@ export default function KeyDocuments({ className = "" }: KeyDocumentsProps) {
                 {cat.documents.length}
               </span>
 
-              {/*  yellow underline bar. */}
               {isActive && (
                 <span className="absolute bottom-0 left-0 h-0.5 w-full bg-yellow" />
               )}
@@ -99,12 +84,12 @@ export default function KeyDocuments({ className = "" }: KeyDocumentsProps) {
       </div>
 
       <div className="mt-auto shrink-0 pt-4">
-        <a
+        <Link
           href={`/documents?category=${activeTab}`}
           className="block w-full rounded-xl border border-off-white/30 py-3 text-center text-sm text-white transition-colors hover:bg-off-white/5"
         >
           View all {activeCategory?.label} documents ↗
-        </a>
+        </Link>
       </div>
     </div>
   );

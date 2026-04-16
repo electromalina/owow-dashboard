@@ -1,4 +1,4 @@
-// Reusable empty card block used as dashboard content placeholder.
+// Simple placeholder card used while composing dashboard layouts.
 type CardPlaceholderProps = {
   className?: string;
 };

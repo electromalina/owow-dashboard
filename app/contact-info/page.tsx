@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-/** Replace with your real Slack workspace / channel URLs and addresses. */
+// Contact endpoints are currently static placeholders; swap these values for real project details.
 const CONTACT = {
   projectManager: "Alex Morgan",
   slack: {
@@ -97,7 +97,6 @@ export default function ContactInfoPage() {
       </div>
 
       <div className="mt-10 space-y-5">
-        {/* Primary: Slack + PM */}
         <section className="relative overflow-hidden rounded-2xl border border-yellow/35 bg-off-black">
           <div className="absolute inset-y-0 left-0 w-1 bg-yellow" aria-hidden />
           <div className="p-6 pl-8">
@@ -135,7 +134,6 @@ export default function ContactInfoPage() {
           </div>
         </section>
 
-        {/* Email */}
         <section className="rounded-2xl border border-off-white/20 bg-off-black p-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex gap-4">
@@ -163,7 +161,6 @@ export default function ContactInfoPage() {
           </div>
         </section>
 
-        {/* Portal tech support */}
         <section className="rounded-2xl border border-off-white/20 bg-off-black p-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex gap-4">

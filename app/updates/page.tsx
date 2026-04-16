@@ -25,6 +25,7 @@ export default function UpdatesPage() {
   );
 
   const timelineData = useMemo(() => {
+    // Timeline groups updates by date so we can render a single date "node" with multiple cards.
     const grouped = filteredUpdates.reduce(
       (acc, update) => {
         const dateKey = `${update.day}-${update.month}-${update.year}`;
@@ -53,7 +54,6 @@ export default function UpdatesPage() {
         Updates
       </h1>
 
-      {/* Filters */}
       <div className="mb-6 mt-8 flex flex-wrap items-center gap-3">
         <span className="font-mono text-xs uppercase tracking-wider text-off-white">
           Filter:
@@ -74,7 +74,6 @@ export default function UpdatesPage() {
         ))}
       </div>
 
-      {/* Sprint pills — below xl */}
       <div className="mb-8 -mx-6 sticky top-0 z-20 border-b border-off-white/15 bg-black/80 px-6 py-3 backdrop-blur-md xl:hidden">
         <div className="overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <div className="flex min-w-max items-center gap-2">
@@ -120,7 +119,6 @@ export default function UpdatesPage() {
       </div>
 
       <div className="flex gap-8 lg:gap-10">
-        {/* Timeline + cards */}
         <div className="relative min-w-0 flex-1">
           {timelineData.map((dateGroup, groupIndex) => (
             <div
@@ -158,7 +156,6 @@ export default function UpdatesPage() {
           ))}
         </div>
 
-        {/* Phases — desktop */}
         <aside className="hidden w-56 shrink-0 xl:block">
           <div className="rounded-lg border border-off-white/15 bg-off-black p-4">
             <h3 className="mb-4 text-sm font-medium text-white">Phases</h3>

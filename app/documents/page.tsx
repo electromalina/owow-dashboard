@@ -10,7 +10,7 @@ import {
 } from "@/src/data/documents";
 import DocumentRow from "@/src/components/ui/DocumentRow";
 
-// how many documents to show per category 
+// When a category is collapsed, we only show a small preview to keep the page scannable.
 const PREVIEW_COUNT = 2;
 
 function normalize(s: string) {
@@ -25,14 +25,14 @@ function filterDocsBySearch(docs: Document[], search: string): Document[] {
 
 export default function DocumentsPage() {
   const [search, setSearch] = useState("");
-  // track which categories are expanded (showing all docs)
+  // Expanded categories render the full filtered list instead of the preview slice.
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
-  // toggle a category open or closed
+
   function toggleCategory(categoryId: string) {
     setExpandedCategories((prev) =>
       prev.includes(categoryId)
-        ? prev.filter((id) => id !== categoryId) // remove = collapse
-        : [...prev, categoryId] // add = expand
+        ? prev.filter((id) => id !== categoryId)
+        : [...prev, categoryId]
     );
   }
 
@@ -80,7 +80,6 @@ export default function DocumentsPage() {
             />
           </div>
 
-          {/* Upload button: yellow CTA matching OWOW brand */}
           <Link
             href="/documents/upload"
             className="flex items-center gap-2 rounded-full bg-yellow px-5 py-2 text-sm font-medium text-black transition-colors hover:bg-yellow/90"
@@ -90,15 +89,14 @@ export default function DocumentsPage() {
         </div>
       </div>
 
-      {/* CATEGORY SECTIONS */}
       {!hasAnyMatch ? (
         <p className="mt-8 text-center font-mono text-sm text-off-white">
           No documents match your search.
         </p>
       ) : (
-      <div className="mt-8 space-y-4">
-        {documentCategories.map((cat) => {
-          const filteredDocs = filterDocsBySearch(cat.documents, search);
+        <div className="mt-8 space-y-4">
+          {documentCategories.map((cat) => {
+            const filteredDocs = filterDocsBySearch(cat.documents, search);
 
           if (filteredDocs.length === 0) return null;
 
@@ -165,11 +163,10 @@ export default function DocumentsPage() {
                     </button>
                   )}
                 </div>
-              
-            </section>
-          );
-        })}
-      </div>
+              </section>
+            );
+          })}
+        </div>
       )}
     </div>
   );

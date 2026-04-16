@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { documentCategories } from "@/src/data/documents";
 import StatusBadge from "@/src/components/ui/StatusBadge";
 
-// simulated recent uploads for the sidebar (inital starting data)
+// Prototype-only: this page manages uploads in local state (no backend).
 const initialUploads = [
   { id: "r1", name: "User Flow Diagrams v1.5", category: "PRD", size: "4.5 MB", date: "Mar 10, 2026", status: "draft" as const },
   { id: "r2", name: "API Documentation", category: "PRD", size: "890 KB", date: "Mar 8, 2026", status: "approved" as const },
@@ -17,63 +18,55 @@ export default function UploadPage() {
 
   const [uploads, setUploads] = useState<{ id: string; name: string; category: string; size: string | undefined; date: string; status: "draft" | "approved" }[]>(initialUploads);
     
-  // track which upload mode is active: file upload or paste link
   const [mode, setMode] = useState<"file" | "link">("file");
 
-  // form state: stores what the user types into the inputs
   const [docName, setDocName] = useState("");
   const [category, setCategory] = useState("");
   const [linkUrl, setLinkUrl] = useState("");
 
-  // toast notifications: shows success/error messages at the bottom
   const [toast, setToast] = useState<{
     type: "success" | "error";
     message: string;
     undoId?: string;
   } | null>(null);
 
-  // simulates uploading a document
   function handleUpload() {
-    if (!docName) return; // don't submit if name is empty
+    if (!docName) return;
 
-    // create a new upload entry
     const newUpload = {
-      id: `r${Date.now()}`, // unique id using timestamp
+      id: `r${Date.now()}`,
       name: docName,
       category: category
         ? documentCategories.find((c) => c.id === category)?.label || "General"
         : "General",
-      size: mode === "file" ? "—" : undefined, // files have size, links not
-      date: "Mar 16, 2026", // hardcoded for prototype
-      status: "draft" as const, // new uploads always start as draft
+      size: mode === "file" ? "—" : undefined,
+      date: "Mar 16, 2026",
+      status: "draft" as const,
     };
 
     setUploads((prev) => [newUpload, ...prev]);
-    setToast({ type: "success", message: `"${docName}" added successfully.`,undoId: newUpload.id, 
-        // track which upload to undo
- });
+    setToast({
+      type: "success",
+      message: `"${docName}" added successfully.`,
+      undoId: newUpload.id,
+    });
 
- //clear the form
     setDocName("");
     setCategory("");
     setLinkUrl("");
-    // auto-hide toast after 4 seconds
     setTimeout(() => setToast(null), 4000);
   }
 
-  // clears all form inputs
   function handleClear() {
     setDocName("");
     setCategory("");
     setLinkUrl("");
   }
 
-  // Removes an upload by id — used by both Undo and Delete
   function removeUpload(id: string) {
     setUploads((prev) => prev.filter((item) => item.id !== id));
   }
 
-  // Undo the last upload — removes it from the list
   function handleUndo() {
     if (toast?.undoId) {
       removeUpload(toast.undoId);
@@ -101,9 +94,8 @@ export default function UploadPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-10">
-      {/* BREADCRUMB */}
       <nav className="flex items-center gap-2 text-sm">
-        <a href="/documents" className="text-blue hover:underline">Documents</a>
+        <Link href="/documents" className="text-blue hover:underline">Documents</Link>
         <span className="text-off-white">›</span>
         <span className="text-off-white">Manage</span>
       </nav>
@@ -240,7 +232,7 @@ export default function UploadPage() {
               <h2 className="font-heading text-base font-medium text-white">Recent uploads</h2>
               <span className="rounded-md bg-off-white/10 px-2 py-0.5 text-xs text-off-white">{uploads.length}</span>
             </div>
-            <a href="/documents" className="text-sm text-blue hover:underline">View all →</a>
+            <Link href="/documents" className="text-sm text-blue hover:underline">View all →</Link>
           </div>
 
           {/* Recent upload items */}
@@ -287,7 +279,7 @@ export default function UploadPage() {
               </div>
             ))}
           </div> 
-          {/*//yoyoyoyoy*/}
+    
 
           {/* Total count */}
           <p className="mt-4 font-mono text-xs text-off-white">Showing {uploads.length} of {uploads.length + 23} total</p>
