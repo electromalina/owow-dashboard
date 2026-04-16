@@ -123,11 +123,6 @@ export function BudgetSnapshotWidget({ className = "" }: BudgetSnapshotWidgetPro
     if (month) setHistoryMonth(month);
   }, []);
 
-  useEffect(() => {
-    if (!historyOpen) return;
-    updateHistoryMonthLabel();
-  }, [historyOpen, updateHistoryMonthLabel]);
-
   return (
     <div
       className={["budget-snapshot", className].filter(Boolean).join(" ")}

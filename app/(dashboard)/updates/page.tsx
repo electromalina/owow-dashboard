@@ -49,7 +49,7 @@ export default function UpdatesPage() {
   }, [filteredUpdates]);
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-10">
+    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
       <h1 className="font-heading text-3xl font-semibold text-white">
         Updates
       </h1>
@@ -118,14 +118,14 @@ export default function UpdatesPage() {
         </div>
       </div>
 
-      <div className="flex gap-8 lg:gap-10">
+      <div className="flex min-w-0 gap-4 sm:gap-8 lg:gap-10">
         <div className="relative min-w-0 flex-1">
           {timelineData.map((dateGroup, groupIndex) => (
             <div
               key={`${dateGroup.day}-${dateGroup.month}`}
-              className="mb-8 flex gap-6 last:mb-0 lg:gap-10"
+              className="mb-8 flex gap-3 last:mb-0 sm:gap-6 lg:gap-10"
             >
-              <div className="flex w-16 shrink-0 flex-col items-center pt-[10px] lg:w-20">
+              <div className="flex w-12 shrink-0 flex-col items-center pt-[10px] sm:w-16 lg:w-20">
                 <div className="w-full text-center">
                   <div className="text-3xl font-light leading-none text-white lg:text-4xl">
                     {dateGroup.day}

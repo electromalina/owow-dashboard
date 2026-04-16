@@ -4,13 +4,17 @@ import StatusBadge from "./StatusBadge";
 
 type DocumentRowProps = {
   doc: Document;
-  /** Align horizontal bleed with parent card padding (dashboard widget uses `widget`). */
-  rowBleed?: "page" | "widget";
+  /** Align horizontal bleed with parent padding (`widget` = Key Documents card; `documents` = documents index). */
+  rowBleed?: "page" | "widget" | "documents";
 };
 
 export default function DocumentRow({ doc, rowBleed = "page" }: DocumentRowProps) {
   const bleed =
-    rowBleed === "widget" ? "-mx-5 px-5" : "-mx-6 px-6";
+    rowBleed === "widget"
+      ? "-mx-5 px-5"
+      : rowBleed === "documents"
+        ? "-mx-4 px-4 sm:-mx-6 sm:px-6"
+        : "-mx-6 px-6";
   return (
     <Link
       href={`/documents/${doc.id}`}
@@ -24,9 +28,9 @@ export default function DocumentRow({ doc, rowBleed = "page" }: DocumentRowProps
             <DocIcon />
           )}
         </div>
-        <div>
-          <p className="text-sm font-medium text-white">{doc.name}</p>
-          <p className="font-mono text-[11px] leading-snug text-off-white">
+        <div className="min-w-0">
+          <p className="truncate text-sm font-medium text-white">{doc.name}</p>
+          <p className="line-clamp-2 font-mono text-[11px] leading-snug text-off-white">
             {doc.type}
             {doc.size && <span> · {doc.size}</span>}
             <span> · {doc.date}</span>
@@ -34,7 +38,9 @@ export default function DocumentRow({ doc, rowBleed = "page" }: DocumentRowProps
         </div>
       </div>
 
-      <StatusBadge status={doc.status} />
+      <div className="shrink-0 pl-2">
+        <StatusBadge status={doc.status} />
+      </div>
     </Link>
   );
 }

@@ -128,7 +128,7 @@ export function UpcomingMeetingsCard() {
               <div className="absolute -left-px top-1/2 h-8 w-0.5 -translate-y-1/2 rounded-full bg-[#c9a227]" />
             )}
 
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-3 sm:flex-nowrap sm:gap-4">
               <div className="min-w-[54px] rounded-lg bg-[#252525] px-2.5 py-1.5">
                 <div className="text-center text-lg font-semibold text-white font-mono">
                   {meeting.date.split(" ")[1]}

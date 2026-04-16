@@ -93,9 +93,11 @@ export default function UploadPage() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-10">
-      <nav className="flex items-center gap-2 text-sm">
-        <Link href="/documents" className="text-blue hover:underline">Documents</Link>
+    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-10">
+      <nav className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
+        <Link href="/documents" className="text-blue hover:underline">
+          Documents
+        </Link>
         <span className="text-off-white">›</span>
         <span className="text-off-white">Manage</span>
       </nav>
@@ -110,7 +112,7 @@ export default function UploadPage() {
         {/* LEFT: UPLOAD FORM */}
         <div>
           {/* mode toggle: switches between file upload and paste link */}
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setMode("file")}
               className={`flex items-center gap-2 rounded-full px-5 py-2 text-sm transition-colors ${
@@ -135,7 +137,7 @@ export default function UploadPage() {
 
           {/* FILE UPLOAD MODE */}
           {mode === "file" && (
-            <div className="mt-6 rounded-2xl border border-dashed border-off-white/30 bg-off-black p-10">
+            <div className="mt-6 rounded-2xl border border-dashed border-off-white/30 bg-off-black p-6 sm:p-10">
               <div className="flex flex-col items-center text-center">
                 {/* Upload cloud icon */}
                 <div className="flex h-16 w-16 items-center justify-center rounded-full bg-off-white/10">
@@ -209,7 +211,7 @@ export default function UploadPage() {
           </div>
 
           {/* ACTION BUTTONS */}
-          <div className="mt-6 flex gap-3">
+          <div className="mt-6 flex flex-wrap gap-3">
             <button
               onClick={handleUpload}
               className="flex items-center gap-2 rounded-full bg-yellow px-6 py-2.5 text-sm font-medium text-black transition-colors hover:bg-yellow/90"
@@ -227,7 +229,7 @@ export default function UploadPage() {
 
         {/* RIGHT: RECENT UPLOADS SIDEBAR */}
         <div>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-2">
               <h2 className="font-heading text-base font-medium text-white">Recent uploads</h2>
               <span className="rounded-md bg-off-white/10 px-2 py-0.5 text-xs text-off-white">{uploads.length}</span>
@@ -240,9 +242,9 @@ export default function UploadPage() {
             {uploads.map((item) => (
               <div
                 key={item.id}
-                className="group flex items-center justify-between rounded-xl border border-off-white/10 px-4 py-3"
+                className="group flex flex-col gap-3 rounded-xl border border-off-white/10 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
               >
-                <div className="flex items-center gap-3">
+                <div className="flex min-w-0 items-center gap-3">
                   {/* Doc or link icon based on whether item has a size */}
                   <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-off-white/10">
                     {item.size ? (
@@ -257,8 +259,8 @@ export default function UploadPage() {
                       </svg>
                     )}
                   </div>
-                  <div>
-                    <p className="text-sm font-medium text-white">{item.name}</p>
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium text-white">{item.name}</p>
                     <p className="font-mono text-xs text-off-white">
                       {item.category}
                       {item.size && <span> · {item.size}</span>}
@@ -266,7 +268,7 @@ export default function UploadPage() {
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex shrink-0 items-center gap-2 self-end sm:self-auto">
                   <StatusBadge status={item.status} />
                   {/* delete button, hidden by default, shows on hover */}
                   <button
@@ -289,7 +291,7 @@ export default function UploadPage() {
       {/* TOAST NOTIFICATION */}
       {toast && (
         <div
-          className={`fixed bottom-6 right-6 flex items-center gap-3 rounded-xl border px-5 py-3 shadow-lg ${
+          className={`fixed bottom-4 left-4 right-4 z-50 flex max-w-lg flex-wrap items-center gap-3 rounded-xl border px-4 py-3 shadow-lg sm:bottom-6 sm:left-auto sm:right-6 sm:max-w-none sm:flex-nowrap sm:px-5 ${
             toast.type === "success"
               ? "border-green/30 bg-off-black"
               : "border-pink/30 bg-off-black"
