@@ -1,14 +1,13 @@
 "use client";
 
-import { createClient } from "@/lib/supabase/client";
 import {
   buildDashboardNavLinks,
   type NavLink,
 } from "@/src/components/sidebar-links";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 function linkIsActive(pathname: string, href: string): boolean {
   if (href === "/") {
@@ -28,50 +27,7 @@ type HeaderProps = {
 export function Header({ navLinks }: HeaderProps) {
   const mobileNavLinks = navLinks ?? buildDashboardNavLinks(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
-  const [sessionUser, setSessionUser] = useState<{
-    email?: string;
-  } | null>(null);
-  const profileWrapRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-  const router = useRouter();
-
-  useEffect(() => {
-    const supabase = createClient();
-    supabase.auth.getUser().then(({ data }: { data: { user: { email?: string } | null } }) => {
-      const { user } = data;
-      setSessionUser(user ? { email: user.email } : null);
-    });
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(
-      (_event: unknown, session: { user: { email?: string } } | null) => {
-        setSessionUser(session?.user ? { email: session.user.email } : null);
-      }
-    );
-    return () => subscription.unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    function handlePointerDown(event: PointerEvent) {
-      if (
-        profileWrapRef.current &&
-        !profileWrapRef.current.contains(event.target as Node)
-      ) {
-        setProfileOpen(false);
-      }
-    }
-    document.addEventListener("pointerdown", handlePointerDown);
-    return () => document.removeEventListener("pointerdown", handlePointerDown);
-  }, []);
-
-  async function handleLogout() {
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    setProfileOpen(false);
-    router.push("/auth");
-    router.refresh();
-  }
 
   return (
     <>
@@ -99,58 +55,16 @@ export function Header({ navLinks }: HeaderProps) {
             </span>
           </button>
 
-          <div className="relative" ref={profileWrapRef}>
-            <button
-              type="button"
-              aria-label="Profile menu"
-              aria-expanded={profileOpen}
-              aria-haspopup="true"
-              onClick={() => setProfileOpen((open) => !open)}
-              className="cursor-pointer rounded-lg border border-off-white/30 bg-transparent p-2.5 transition-colors hover:bg-off-black"
-            >
-              <Image
-                src="/profile.svg"
-                alt=""
-                width={32}
-                height={32}
-                sizes="32px"
-                loading="lazy"
-                fetchPriority="low"
-              />
-            </button>
-            {profileOpen ? (
-              <div
-                role="menu"
-                className="absolute right-0 top-full z-[60] mt-2 min-w-[180px] rounded-lg border border-off-white/20 bg-black py-1 shadow-lg"
-              >
-                {sessionUser ? (
-                  <>
-                    {sessionUser.email ? (
-                      <p className="border-b border-off-white/15 px-4 py-2 text-xs text-off-white/60">
-                        {sessionUser.email}
-                      </p>
-                    ) : null}
-                    <button
-                      type="button"
-                      role="menuitem"
-                      onClick={() => void handleLogout()}
-                      className="w-full px-4 py-2.5 text-left text-sm text-off-white transition-colors hover:bg-off-black"
-                    >
-                      Log out
-                    </button>
-                  </>
-                ) : (
-                  <Link
-                    href="/auth"
-                    role="menuitem"
-                    className="block px-4 py-2.5 text-sm text-off-white transition-colors hover:bg-off-black"
-                    onClick={() => setProfileOpen(false)}
-                  >
-                    Sign in
-                  </Link>
-                )}
-              </div>
-            ) : null}
+          <div className="rounded-lg border border-off-white/30 bg-transparent p-2.5">
+            <Image
+              src="/profile.svg"
+              alt="Profile"
+              width={32}
+              height={32}
+              sizes="32px"
+              loading="lazy"
+              fetchPriority="low"
+            />
           </div>
         </div>
       </div>

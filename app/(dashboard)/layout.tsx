@@ -1,30 +1,14 @@
-import { createClient } from "@/lib/supabase/server";
 import { Footer } from "@/src/components/Footer";
 import { Header } from "@/src/components/Header";
 import { buildDashboardNavLinks } from "@/src/components/sidebar-links";
 import { Sidebar } from "@/src/components/Sidebar";
 
-export default async function DashboardLayout({
+export default function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  let isAdmin = false;
-  if (user) {
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .maybeSingle();
-    isAdmin = profile?.role === "admin";
-  }
-
-  const navLinks = buildDashboardNavLinks(isAdmin);
+  const navLinks = buildDashboardNavLinks(true);
 
   return (
     <main className="min-h-screen bg-background text-foreground">
